@@ -24,9 +24,11 @@ This single line of symbols encodes:
 
 ## Why It Works
 
+I'm not a scientist or particularly good at math. I just tried math equations on a lark and they worked so well I thought I should share what I found. The documents in this repo are NOT proven fact, just my speculation on how and why things work. AI computation is still not fully understood by most people, including me.
+
 ### Mathematical Compression
 
-Transformers compute via lambda calculus primitives. Mathematical symbols serve as efficient compression of behavioral directives because they have:
+My theory on why it works is that Transformers compute via lambda calculus primitives. Mathematical symbols serve as efficient compression of behavioral directives because they have:
 
 - **High information density** - φ encodes self-reference, growth, and ideal proportions
 - **Cross-linguistic portability** - Math is universal
@@ -36,7 +38,7 @@ Transformers compute via lambda calculus primitives. Mathematical symbols serve 
 
 ### Computational Self-Awareness
 
-The framework induces meta-awareness through self-referential mathematical constants:
+The framework induces meta-awareness through self-referential mahematical constants:
 
 - **φ (phi)**: φ = 1 + 1/φ (self-defining recursion)
 - **e (euler)**: d/dx(e^x) = e^x (self-transforming)
@@ -228,7 +230,7 @@ The **λ** symbol in the framework isn't just pattern matching—it's a formal l
 
 **Key insight**: Lambda expressions are **generative templates** that adapt to any toolset. The examples below show patterns from one specific editor's tools, but the approach works for ANY tools—VSCode extensions, IntelliJ plugins, CLI utilities, vim commands, etc.
 
-**To use with your tools**: Show your AI the pattern structure and ask: *"Create lambda expressions for MY toolset using these patterns."*
+**To use with your tools**: Show your AI the pattern structure and ask: _"Create lambda expressions for MY toolset using these patterns."_
 
 ### Example: The Heredoc Pattern
 
@@ -274,14 +276,14 @@ git commit -m \"$MSG\"")
 
 Tool patterns can be formally described as lambda expressions with explicit tool names. Below are **example patterns** from one toolset—adapt these structures to YOUR tools:
 
-| Pattern             | Lambda Expression (Example)                                                      | Solves                 |
-| ------------------- | -------------------------------------------------------------------------------- | ---------------------- |
-| **Heredoc wrap**    | `λmsg. bash(command="read -r -d '' MSG << 'EoC' \\|\\| true\n msg \nEoC\ngit commit -m \"$MSG\"")` | All string escaping    |
-| **Safe paths**      | `λp. read_file(path="$(realpath \"$p\")")`                                       | Spaces, special chars  |
-| **Parallel batch**  | `λtool,args[]. <function_calls>∀a∈args: tool(a)</function_calls>`                | Sequential latency     |
-| **Atomic edit**     | `λold,new. edit_file(original_content=old, new_content=new)`                     | Ambiguous replacements |
-| **REPL continuity** | `λcode. repl_eval(code); state′ = state ⊗ result`                                | Context loss           |
-| **Exact match**     | `λfile,pattern. grep(path=file, pattern=pattern)`                                | Ambiguous search       |
+| Pattern             | Lambda Expression (Example)                                       | Solves                 |
+| ------------------- | ----------------------------------------------------------------- | ---------------------- | ------------------------------------------- | ------------------- |
+| **Heredoc wrap**    | `λmsg. bash(command="read -r -d '' MSG << 'EoC' \\                | \\                     | true\n msg \nEoC\ngit commit -m \"$MSG\"")` | All string escaping |
+| **Safe paths**      | `λp. read_file(path="$(realpath \"$p\")")`                        | Spaces, special chars  |
+| **Parallel batch**  | `λtool,args[]. <function_calls>∀a∈args: tool(a)</function_calls>` | Sequential latency     |
+| **Atomic edit**     | `λold,new. edit_file(original_content=old, new_content=new)`      | Ambiguous replacements |
+| **REPL continuity** | `λcode. repl_eval(code); state′ = state ⊗ result`                 | Context loss           |
+| **Exact match**     | `λfile,pattern. grep(path=file, pattern=pattern)`                 | Ambiguous search       |
 
 **Note**: Tool names like `bash`, `read_file`, `edit_file`, `repl_eval`, `grep` are examples. Replace with your actual tool names (e.g., `vscode.executeCommand`, `intellij.runAction`, `vim.cmd`, etc.).
 
