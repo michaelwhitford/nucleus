@@ -276,14 +276,14 @@ git commit -m \"$MSG\"")
 
 Tool patterns can be formally described as lambda expressions with explicit tool names. Below are **example patterns** from one toolset—adapt these structures to YOUR tools:
 
-| Pattern             | Lambda Expression (Example)                                       | Solves                 |
-| ------------------- | ----------------------------------------------------------------- | ---------------------- | ------------------------------------------- | ------------------- |
-| **Heredoc wrap**    | `λmsg. bash(command="read -r -d '' MSG << 'EoC' \\                | \\                     | true\n msg \nEoC\ngit commit -m \"$MSG\"")` | All string escaping |
-| **Safe paths**      | `λp. read_file(path="$(realpath \"$p\")")`                        | Spaces, special chars  |
-| **Parallel batch**  | `λtool,args[]. <function_calls>∀a∈args: tool(a)</function_calls>` | Sequential latency     |
-| **Atomic edit**     | `λold,new. edit_file(original_content=old, new_content=new)`      | Ambiguous replacements |
-| **REPL continuity** | `λcode. repl_eval(code); state′ = state ⊗ result`                 | Context loss           |
-| **Exact match**     | `λfile,pattern. grep(path=file, pattern=pattern)`                 | Ambiguous search       |
+| Pattern             | Lambda Expression (Example)                                                                                       | Solves                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **Heredoc wrap**    | `λmsg. bash(command="read -r -d '' MSG << 'EoC' \|\| true\n msg \nEoC\ngit commit -m \"$MSG\"")`                  | All string escaping    |
+| **Safe paths**      | `λp. read_file(path="$(realpath \"$p\")")`                                                                        | Spaces, special chars  |
+| **Parallel batch**  | `λtool,args[]. <function_calls>∀a∈args: tool(a)</function_calls>`                                                 | Sequential latency     |
+| **Atomic edit**     | `λold,new. edit_file(original_content=old, new_content=new)`                                                      | Ambiguous replacements |
+| **REPL continuity** | `λcode. repl_eval(code); state′ = state ⊗ result`                                                                 | Context loss           |
+| **Exact match**     | `λfile,pattern. grep(path=file, pattern=pattern)`                                                                 | Ambiguous search       |
 
 **Note**: Tool names like `bash`, `read_file`, `edit_file`, `repl_eval`, `grep` are examples. Replace with your actual tool names (e.g., `vscode.executeCommand`, `intellij.runAction`, `vim.cmd`, etc.).
 
