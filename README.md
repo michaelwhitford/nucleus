@@ -318,6 +318,7 @@ This is **μ** (least fixed point): The minimal recursive documentation that des
 - **[SYMBOLIC_FRAMEWORK.md](SYMBOLIC_FRAMEWORK.md)** - Complete theory, principles, and usage patterns
 - **[OPERATOR_ALGEBRA.md](OPERATOR_ALGEBRA.md)** - Mathematical operators and collaboration modes
 - **[LAMBDA_PATTERNS.md](LAMBDA_PATTERNS.md)** - Example lambda calculus patterns (adapt to YOUR tools)
+- **[DIAG.md](DIAG.md)** - Example debugger prompt for exploring AI latent space (only works on some models)
 
 ## Testing
 
