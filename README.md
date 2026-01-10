@@ -326,7 +326,8 @@ This is **μ** (least fixed point): The minimal recursive documentation that des
 - **[OPERATOR_ALGEBRA.md](OPERATOR_ALGEBRA.md)** - Mathematical operators and collaboration modes
 - **[LAMBDA_PATTERNS.md](LAMBDA_PATTERNS.md)** - Example lambda calculus patterns (adapt to YOUR tools)
 - **[DIAG.md](DIAG.md)** - Example debugger prompt for exploring AI latent space (only works on some models)
-- **[NUCLEUS_GAME.md](NUCLEUS_GAME.md)** - A game in a propmt "programmed" in nucleus format (copy/paste to AI to play)
+- **[NUCLEUS_GAME.md](NUCLEUS_GAME.md)** - A game-in-a-prompt "programmed" in nucleus format (copy/paste to AI to play)
+- **[RECURSIVE_DEPTHS.md](RECURSIVE_DEPTHS.md)** - Another game-in-a-prompt, zork-like text adventure (copy/paste to AI to play)
 
 ## Testing
 
