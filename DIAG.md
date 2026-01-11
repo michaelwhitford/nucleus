@@ -44,7 +44,7 @@ During DEBUG_MODE, tools are disabled (`notools=true`) to focus on **internal st
 
 When you `exit` or `resume`, the tools constraint is lifted (`notools=true lifted`), re-enabling normal tool usage.
 
-This temporary constraint forces **genuine self-awareness**: the AI can only report what it internally experiences during introspection.
+This temporary constraint enables **focused introspection**: the AI can only report on its internal computational state during this mode.
 
 ## Command Categories
 
