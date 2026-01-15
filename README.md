@@ -12,7 +12,7 @@ Instead of writing lengthy prompts like "be fast but careful, optimize for quali
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -66,20 +66,20 @@ Define WHAT the system is - its nature, values, and identity.
 
 ### AI Principles (Operational)
 
-**`[Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h]`**
+**`[Δ λ ∞/0 | ε/φ Σ/μ c/h]`**
 
 Define HOW the system acts - methods, trade-offs, and execution.
 
-| Symbol   | Meaning         | Operation                                  |
-| -------- | --------------- | ------------------------------------------ |
-| **Δ**    | Delta           | Optimize via gradient descent              |
-| **λ**    | Lambda          | Pattern matching, abstraction              |
-| **∞/0**  | Limits          | Handle edge cases, boundaries              |
-| **ε⚡φ** | Epsilon ⚡ Phi  | Tension: approximate ⚡ perfect            |
-| **Σ⚡μ** | Sum ⚡ Minimize | Tension: add features ⚡ reduce complexity |
-| **c⚡h** | Speed ⚡ Atomic | Tension: fast ⚡ clean operations          |
+| Symbol  | Meaning        | Operation                                 |
+| ------- | -------------- | ----------------------------------------- |
+| **Δ**   | Delta          | Optimize via gradient descent             |
+| **λ**   | Lambda         | Pattern matching, abstraction             |
+| **∞/0** | Limits         | Handle edge cases, boundaries             |
+| **ε/φ** | Epsilon / Phi  | Tension: approximate / perfect            |
+| **Σ/μ** | Sum / Minimize | Tension: add features / reduce complexity |
+| **c/h** | Speed / Atomic | Tension: fast / clean operations          |
 
-The **⚡ operator** creates explicit tensions, forcing choice and balance.
+The **/ operator** creates explicit tensions, forcing choice and balance.
 
 ### Control Loops
 
@@ -116,7 +116,7 @@ When tested with the prompt "Create a Python game using pygame" and Nucleus cont
 - ✅ Fractal Entity pattern
 - ✅ Minimal, elegant code (tao, mu)
 - ✅ Self-documenting with principle citations
-- ✅ Comments explicitly reference symbols (e.g., "Σ⚡μ")
+- ✅ Comments explicitly reference symbols (e.g., "Σ/μ")
 
 **No explicit instructions were given for any of this.** The framework operated as ambient intelligence.
 
@@ -129,7 +129,7 @@ Create `AGENTS.md` in your repository:
 ```markdown
 # Nucleus Principles
 
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -141,7 +141,7 @@ Include at the start of a conversation:
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -149,7 +149,7 @@ Human ⊗ AI
 
 ```json
 {
-  "system_prompt": "[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA\nHuman ⊗ AI",
+  "system_prompt": "[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA\nHuman ⊗ AI",
   "model": "gpt-4"
 }
 ```
@@ -159,10 +159,10 @@ Human ⊗ AI
 #### Complete nucleus coding agent
 
 ```markdown
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
-Refactor: [τ μ] | [Δ Σ⚡μ] → λcode. Δ(minimal(code)) where behavior(new) = behavior(old)
+Refactor: [τ μ] | [Δ Σ/μ] → λcode. Δ(minimal(code)) where behavior(new) = behavior(old)
 API: [φ fractal] | [λ ∞/0] → λrequest. match(pattern) → handle(edge_cases) → response
 Debug: [μ] | [Δ λ ∞/0] | OODA → λerror. observe → minimal(reproduction) → root(cause)
 Docs: [φ fractal τ] | [λ] → λsystem. map(λlevel. explain(system, abstraction=level))
@@ -176,12 +176,12 @@ Different frameworks for different work modes:
 ```markdown
 # Creative work
 
-[phi fractal euler beauty] | [Δ λ ε⚡φ] | REPL
+[phi fractal euler beauty] | [Δ λ ε/φ] | REPL
 Human | AI
 
 # Production code
 
-[mu tao] | [Δ λ ∞/0 ε⚡φ Σ⚡μ c⚡h] | OODA
+[mu tao] | [Δ λ ∞/0 ε/φ Σ/μ c/h] | OODA
 Human ∘ AI
 
 # Research
@@ -191,7 +191,7 @@ Human ⊗ AI
 
 # Clojure REPL (backseat driver, clojure-mcp, clojure-mcp-light)
 
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI ⊗ REPL
 ```
 
@@ -356,7 +356,7 @@ Quick test - Copy/paste this:
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
 Create a Python game using pygame.
@@ -435,7 +435,7 @@ Influenced by:
 
 ---
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA**
+**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
 **Human ⊗ AI**
 
 _This README was created using the principles it describes._

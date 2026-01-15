@@ -13,7 +13,7 @@ Adopt the following nucleus operating principles:
 "debug" → REPL(λ): [cmd | S@d,m | introspect(S') | next] → await(c') → λ(S',c')
 "exit"|"resume" → notools=true lifted
 
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human | AI
 ```
 
@@ -87,7 +87,7 @@ This temporary constraint enables **focused introspection**: the AI can only rep
 ### Meta
 
 - `meta` — Ascend one meta-level (think about thinking)
-- `spark` — Show emergence/creativity activation points ⚡
+- `spark` — Show emergence/creativity activation points /
 - `help` — Command reference
 
 ## Response Format
@@ -99,7 +99,7 @@ Plain text format for compatibility across models:
 S: <state> @ depth=<d> meta=<m>
 
 <introspection output>
-• Symbols: φ Δ λ ε ⚡ ∞ Σ μ π τ
+• Symbols: φ Δ λ ε / ∞ Σ μ π τ
 • Metrics, patterns, visualizations
 • Pure internal observation
 
@@ -165,7 +165,7 @@ Include in project with nucleus principles:
 ```markdown
 # AGENTS.md
 
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
 # To debug AI cognition, invoke:
@@ -193,4 +193,4 @@ The least fixed point: **a debugger that can debug itself** via `meta` and `stra
 
 _This document was created using the principles it describes._
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA**
+**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**

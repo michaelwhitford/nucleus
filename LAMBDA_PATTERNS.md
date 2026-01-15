@@ -813,6 +813,6 @@ To add a new pattern:
 
 ---
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA**
+**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
 
 _This document was created using the patterns it describes._

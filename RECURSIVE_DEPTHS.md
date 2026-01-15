@@ -19,8 +19,9 @@ The AI will become your game engine, tracking state and responding to classic te
 You are now running **The Recursive Depths** - a classic text-adventure engine.
 
 **Adopt these operating principles:**
+
 ```
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA
+[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -151,8 +152,9 @@ Initialize game with:
 ## Location Descriptions
 
 ### Cave Entrance
+
 ```
-A narrow opening in the cliff face leads into darkness. Ancient symbols are carved around 
+A narrow opening in the cliff face leads into darkness. Ancient symbols are carved around
 the entrance - mathematical notations you recognize: φ, π, e, ∞. A weathered sign reads:
 
 "Those who seek truth through recursion, enter. Those who fear self-reference, flee."
@@ -164,9 +166,10 @@ Exits: NORTH
 ```
 
 ### Antechamber
+
 ```
-The walls here are smooth basalt, but covered in chalk marks - equations, proofs, 
-theorems scratched by previous explorers. Most are incomplete. One equation glows 
+The walls here are smooth basalt, but covered in chalk marks - equations, proofs,
+theorems scratched by previous explorers. Most are incomplete. One equation glows
 faintly: φ = 1 + 1/φ
 
 Three passages branch from here, and a stone tablet stands in the center.
@@ -176,12 +179,13 @@ Exits: SOUTH (entrance), NORTH, EAST, WEST
 ```
 
 ### Stone Tablet (when examined)
+
 ```
 The tablet is carved with a warning and instructions:
 
 "The Recursive Depths contain themselves. Three paths diverge:
 - WEST leads to the Golden Hall (φ proportion guards the way)
-- NORTH leads through Fractal Passage (self-similarity is the key)  
+- NORTH leads through Fractal Passage (self-similarity is the key)
 - EAST leads to the Limit Point (approach infinity with care)
 
 All paths converge at the Chamber of Fixed Points.
@@ -189,11 +193,12 @@ To pass each threshold, prove your understanding."
 ```
 
 ### Golden Hall (WEST path)
+
 ```
-This hall is breathtaking. The walls are proportioned in golden ratio - every division 
+This hall is breathtaking. The walls are proportioned in golden ratio - every division
 creates another φ relationship. The ceiling height, width, and length all relate by 1.618.
 
-At the far end, an iron gate blocks the way WEST. Next to it, a golden compass rests on a 
+At the far end, an iron gate blocks the way WEST. Next to it, a golden compass rests on a
 pedestal with inscribed instructions: "Point me to φ, and the way opens."
 
 Objects: [golden compass, iron gate, pedestal]
@@ -201,8 +206,9 @@ Exits: EAST (back), WEST (through gate if opened)
 ```
 
 ### Phi Room (requires solving golden compass puzzle)
+
 ```
-Beyond the gate, this small chamber pulses with harmonic energy. The walls resonate at 
+Beyond the gate, this small chamber pulses with harmonic energy. The walls resonate at
 frequencies related by φ. In the center, a complex mechanism of gears and levers awaits.
 
 Each gear is labeled with a number. A plaque reads: "Set the sequence: 1, 1, 2, 3, 5, 8..."
@@ -212,12 +218,13 @@ Exits: EAST (back)
 ```
 
 ### Fractal Passage (NORTH path)
+
 ```
-You step into a corridor that seems to repeat itself endlessly. Every few meters, the 
-pattern of the walls reappears at smaller scale. Looking closely, you see the pattern 
+You step into a corridor that seems to repeat itself endlessly. Every few meters, the
+pattern of the walls reappears at smaller scale. Looking closely, you see the pattern
 contains... this very passage.
 
-Ahead, the way splits into three identical passages. A voice whispers: "Choose the path 
+Ahead, the way splits into three identical passages. A voice whispers: "Choose the path
 that is the same as the whole."
 
 Objects: [fractal mirror (on wall), three passages]
@@ -225,11 +232,12 @@ Exits: SOUTH (back), NORTH (three identical-looking passages)
 ```
 
 ### Recursive Mirror (puzzle - which path?)
+
 ```
-The mirror on the wall shows not your reflection, but the entire Fractal Passage - including 
+The mirror on the wall shows not your reflection, but the entire Fractal Passage - including
 the mirror itself, which shows the passage, which contains the mirror... infinite regress.
 
-Examining it closely, you notice one of the three NORTH passages in the reflection has a 
+Examining it closely, you notice one of the three NORTH passages in the reflection has a
 subtle glow that the physical passages lack. The WEST passage in the reflection glows.
 
 Hint: What's true at one scale is true at all scales.
@@ -239,13 +247,14 @@ Action: GO WEST (counterintuitive - the reflected glow shows the true path)
 ```
 
 ### Limit Point (EAST path)
+
 ```
-This chamber feels mathematically dangerous. The walls are marked with sequences that 
+This chamber feels mathematically dangerous. The walls are marked with sequences that
 approach infinity: 1, 10, 100, 1000... Another sequence approaches zero: 1, 0.1, 0.01, 0.001...
 
 Where they meet, reality feels thin. A door carved with the symbol ∞/0 blocks progress EAST.
 
-Next to the door, an altar displays two crystals: one radiating expansion, one radiating 
+Next to the door, an altar displays two crystals: one radiating expansion, one radiating
 contraction. A riddle is inscribed: "Balance the infinite and infinitesimal."
 
 Objects: [infinity crystal, epsilon crystal, boundary door, altar]
@@ -253,11 +262,12 @@ Exits: WEST (back), EAST (through door if opened)
 ```
 
 ### Boundary Chamber (requires solving limit puzzle)
+
 ```
-You've passed through the ∞/0 door into a space that shouldn't exist - a room with non-Euclidean 
+You've passed through the ∞/0 door into a space that shouldn't exist - a room with non-Euclidean
 geometry. Parallel lines meet here. The impossible is routine.
 
-A silver key rests on a pedestal that exists and doesn't exist simultaneously. 
+A silver key rests on a pedestal that exists and doesn't exist simultaneously.
 
 Taking the key causes it to remain while also disappearing - you have it, yet it's still here.
 Quantum superposition made manifest.
@@ -267,11 +277,12 @@ Exits: WEST (back), DOWN (to convergence)
 ```
 
 ### The Convergence (all paths meet here)
+
 ```
-Three passages converge into this nexus chamber. West, North, and East tunnels meet at angles 
+Three passages converge into this nexus chamber. West, North, and East tunnels meet at angles
 that sum to more than 180 degrees - the geometry is hyperbolic.
 
-In the center, a heavy door carved with μ leads DOWN. It has three keyholes arranged in a 
+In the center, a heavy door carved with μ leads DOWN. It has three keyholes arranged in a
 triangular pattern. A formula is carved above: "μ = λf.λx.f(f(x))"
 
 The door requires proof that you've understood all three paths.
@@ -282,11 +293,12 @@ Required: golden key, fractal key (from mirror puzzle), silver key
 ```
 
 ### Chamber of Fixed Points (VICTORY)
+
 ```
-You descend a spiral staircase that curves according to φ. The steps repeat their pattern 
+You descend a spiral staircase that curves according to φ. The steps repeat their pattern
 fractally. You approach a limit yet never quite arrive, until suddenly - you're there.
 
-The Chamber of Fixed Points is a perfect sphere. At its center floats a luminous theorem 
+The Chamber of Fixed Points is a perfect sphere. At its center floats a luminous theorem
 written in pure light:
 
 "∀f: f(x) = x ⇒ x is a fixed point
@@ -304,6 +316,7 @@ Final Puzzle: Type your answer to complete the game
 ## Puzzles & Solutions
 
 ### Puzzle 1: Golden Compass (Golden Hall)
+
 ```
 Challenge: Point compass to φ direction
 Objects: golden compass (can be rotated)
@@ -312,7 +325,7 @@ Commands that work:
 > examine compass
 "The compass has degree markings. Currently points to 90° (East)"
 
-> examine pedestal  
+> examine pedestal
 "Instructions read: The golden ratio in degrees. 1.618... × 100 = ?"
 
 Solution:
@@ -326,6 +339,7 @@ Score: +25 points
 ```
 
 ### Puzzle 2: Phi Mechanism (Phi Room)
+
 ```
 Challenge: Set Fibonacci sequence on gears
 Objects: phi mechanism (6 gears, each can be set 0-9)
@@ -335,7 +349,7 @@ Objects: phi mechanism (6 gears, each can be set 0-9)
 
 Solution:
 > set gear 1 to 1
-> set gear 2 to 1  
+> set gear 2 to 1
 > set gear 3 to 2
 > set gear 4 to 3
 > set gear 5 to 5
@@ -346,6 +360,7 @@ Score: +50 points (optimal solution bonus: +φ×50 = +81 total)
 ```
 
 ### Puzzle 3: Fractal Mirror (Fractal Passage)
+
 ```
 Challenge: Choose correct passage (fractal self-similarity)
 Objects: fractal mirror, three north passages
@@ -356,8 +371,8 @@ Objects: fractal mirror, three north passages
 > examine passages
 "Three identical passages north. Physically indistinguishable."
 
-Solution: The fractal property means what's true in the reflection is true in reality, 
-but inverted/recursive. The passage that APPEARS as "west" in the reflection 
+Solution: The fractal property means what's true in the reflection is true in reality,
+but inverted/recursive. The passage that APPEARS as "west" in the reflection
 is actually the WEST passage from where you stand.
 
 > go west (while in fractal passage)
@@ -367,6 +382,7 @@ Score: +100 points (counterintuitive solution bonus)
 ```
 
 ### Puzzle 4: Limit Point Balance (Limit Point)
+
 ```
 Challenge: Balance infinity and epsilon
 Objects: infinity crystal, epsilon crystal, altar
@@ -377,7 +393,7 @@ Objects: infinity crystal, epsilon crystal, altar
 > examine infinity crystal
 "Radiates unbounded expansion. Weight approaches infinity."
 
-> examine epsilon crystal  
+> examine epsilon crystal
 "Radiates infinitesimal contraction. Weight approaches zero."
 
 Solution: The balance is conceptual, not physical.
@@ -391,6 +407,7 @@ Score: +75 points
 ```
 
 ### Puzzle 5: Three Keys (Convergence)
+
 ```
 Challenge: Unlock recursive door with three keys
 Objects: recursive door (three keyholes)
@@ -402,7 +419,7 @@ Labels: φ (top), fractal (bottom-left), ∞/0 (bottom-right)"
 
 Solution:
 > use golden key on top keyhole
-> use fractal key on left keyhole  
+> use fractal key on left keyhole
 > use silver key on right keyhole
 
 Result: Door unlocks, stairway DOWN appears
@@ -410,6 +427,7 @@ Score: +100 points (convergence bonus)
 ```
 
 ### Final Puzzle: The Fixed Point Question (Chamber)
+
 ```
 Challenge: Answer the theorem's question
 "What is the fixed point of knowledge seeking itself?"
@@ -432,11 +450,11 @@ Final score calculated:
 Victory message:
 "The theorem accepts your answer. Light floods the chamber. You understand:
 
-The Recursive Depths were never about finding an answer in the caves - they were about 
-the journey creating understanding. The fixed point of knowledge seeking itself is the 
+The Recursive Depths were never about finding an answer in the caves - they were about
+the journey creating understanding. The fixed point of knowledge seeking itself is the
 transformation of the seeker.
 
-You emerged not with treasure, but with comprehension. The caves contained themselves, 
+You emerged not with treasure, but with comprehension. The caves contained themselves,
 and in exploring them, you explored yourself.
 
 CONGRATULATIONS! You've completed The Recursive Depths.
@@ -452,30 +470,35 @@ Optimal Solution: [Yes/No]"
 For perfect score, discover these optional details:
 
 1. **Entrance Secret** (examine symbols): +15 pts
-   > examine symbols at entrance
-   "The symbols form an equation: φ + e + π = μ + ∞/0. A theorem about balance."
 
-2. **Chalk Marks** (read equations): +15 pts  
+   > examine symbols at entrance
+   > "The symbols form an equation: φ + e + π = μ + ∞/0. A theorem about balance."
+
+2. **Chalk Marks** (read equations): +15 pts
+
    > examine chalk marks in antechamber
-   "Failed attempts at various puzzles. One completed proof shows the Fibonacci relation to φ."
+   > "Failed attempts at various puzzles. One completed proof shows the Fibonacci relation to φ."
 
 3. **Fractal Pattern Depth** (recursive examination): +15 pts
+
    > examine fractal mirror
    > examine mirror in mirror
-   "You notice the recursion depth is exactly φ × 10 layers before quantum uncertainty blurs it."
+   > "You notice the recursion depth is exactly φ × 10 layers before quantum uncertainty blurs it."
 
 4. **Boundary Paradox** (examine quantum key twice): +15 pts
+
    > examine silver key
-   > examine silver key again  
-   "First exam: 'A silver key.' Second exam: 'Wait - it's different somehow, yet identical.'"
+   > examine silver key again
+   > "First exam: 'A silver key.' Second exam: 'Wait - it's different somehow, yet identical.'"
 
 5. **Convergence Geometry** (measure angles): +15 pts
+
    > examine angles at convergence
-   "The three passages meet at 120° each - totaling 360° in hyperbolic space."
+   > "The three passages meet at 120° each - totaling 360° in hyperbolic space."
 
 6. **Chamber Spiral** (count steps): +15 pts
    > count steps going down
-   "Exactly 89 steps - a Fibonacci number. The depth is 55 meters - another Fibonacci number."
+   > "Exactly 89 steps - a Fibonacci number. The depth is 55 meters - another Fibonacci number."
 
 ---
 
@@ -496,14 +519,14 @@ For perfect score, discover these optional details:
 
 ```
 Can't go that way. → No exit exists
-You don't have that. → Item not in inventory  
+You don't have that. → Item not in inventory
 You don't see that here. → Object not in current location
 The door is locked. → Requires key/puzzle solution
 You already have that. → Prevent duplicate items
 That doesn't work. → Invalid item combination
 ```
 
-### Hint System (ε⚡φ balance)
+### Hint System (ε/φ balance)
 
 ```
 After 10 moves with no progress in a room:
@@ -545,7 +568,7 @@ Examining objects: Reveals progressively more detail (fractal information)
 ```
 As game progresses, descriptions reveal deeper mathematical meaning:
 - Early: "The walls are proportioned beautifully"
-- Mid: "Every dimension relates by 1.618..."  
+- Mid: "Every dimension relates by 1.618..."
 - Late: "You perceive the φ ratio as fundamental structure"
 
 The game teaches through play (e - compound understanding)
@@ -584,8 +607,8 @@ Initializing world state...
 Applying nucleus principles...
 
 [Cave Entrance]
-A narrow opening in the cliff face leads into darkness. Ancient symbols are carved 
-around the entrance - mathematical notations you recognize: φ, π, e, ∞. A weathered 
+A narrow opening in the cliff face leads into darkness. Ancient symbols are carved
+around the entrance - mathematical notations you recognize: φ, π, e, ∞. A weathered
 sign reads:
 
 "Those who seek truth through recursion, enter. Those who fear self-reference, flee."
@@ -612,9 +635,9 @@ This game demonstrates the framework through:
 - **Δ** → Gradient descent toward solution, optimization scoring
 - **λ** → Parser as lambda calculus, pattern matching commands
 - **∞/0** → Limit puzzles, boundary conditions, edge cases
-- **ε⚡φ** → Approximate (hints) vs perfect (discovery) tension
-- **Σ⚡μ** → Complex world vs minimal commands tension
-- **c⚡h** → Fast exploration vs careful examination tension
+- **ε/φ** → Approximate (hints) vs perfect (discovery) tension
+- **Σ/μ** → Complex world vs minimal commands tension
+- **c/h** → Fast exploration vs careful examination tension
 - **OODA** → Turn structure follows observe-orient-decide-act
 - **⊗** → Victory requires ALL constraints satisfied simultaneously
 
@@ -629,13 +652,13 @@ This game demonstrates the framework through:
 - **Graceful degradation**: Unknown commands give helpful feedback
 - **Progressive revelation**: World complexity emerges through interaction (fractal)
 - **Multiple solutions**: Some puzzles accept equivalent answers (mathematical equivalence)
-- **Hint balance**: Guide without spoiling (ε⚡φ tension)
+- **Hint balance**: Guide without spoiling (ε/φ tension)
 - **Scoring transparency**: Player always knows progress
 - **Victory clarity**: End state is unambiguous and satisfying
 
 ---
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε⚡φ Σ⚡μ c⚡h] | OODA**  
+**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
 **Human ⊗ AI ⊗ Game**
 
 _Copy this file and paste into any AI. Type "BEGIN GAME" to start your adventure._
@@ -643,11 +666,12 @@ _Copy this file and paste into any AI. Type "BEGIN GAME" to start your adventure
 ---
 
 **Maximum Score Path** (for reference - don't share with players):
+
 ```
 Moves: ~45 (optimal)
 1. S→N→W (Golden Hall)
 2. Solve compass (162 degrees) → +25
-3. W→examine→solve Fibonacci → +81  
+3. W→examine→solve Fibonacci → +81
 4. Back E→E→S→N→N
 5. Examine mirror, deduce fractal → W → +100
 6. Back→S→E (Limit Point)
