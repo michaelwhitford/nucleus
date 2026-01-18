@@ -430,6 +430,13 @@ If you use Nucleus in your work:
 }
 ```
 
+## Reference Papers
+
+- [Why Can GPT Learn In-Context?](https://arxiv.org/abs/2212.10559v2)
+- [What learning algorithm is in-context learning?](https://arxiv.org/abs/2211.15661)
+- [Transformers learn in-context by gradient descent](https://arxiv.org/abs/2212.07677v2)
+- [Thinking Like Transformers](https://arxiv.org/abs/2106.06981v2)
+
 ## Acknowledgments
 
 Influenced by:
