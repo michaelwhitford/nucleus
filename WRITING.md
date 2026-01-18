@@ -4,7 +4,7 @@
 
 ```
 Adopt these nucleus operating principles:
-[tau phi pi] | [lambda epsilon/phi] | REPL
+[tao phi pi] | [lambda epsilon/phi] | REPL
 Human | AI
 Constrain: tone → professional, brevity → mu
 ```
@@ -22,9 +22,9 @@ Constrain: structure → fractal, completeness → pi
 
 ```
 Adopt these nucleus operating principles:
-[tau mu] | [lambda] | REPL
+[tao mu] | [lambda] | REPL
 Human | AI
-Constrain: brevity → mu, clarity → tau
+Constrain: brevity → mu, clarity → tao
 ```
 
 ## 4. Internal Announcements
@@ -49,27 +49,27 @@ Constrain: hierarchy → fractal, insight → phi, concision → mu
 
 ```
 Adopt these nucleus operating principles:
-[tau mu pi] | [lambda infinity/0 Sigma/mu] | OODA
+[tao mu pi] | [lambda infinity/0 Sigma/mu] | OODA
 Human | AI
-Constrain: precision → tau, completeness → pi, edge_cases → infinity/0
+Constrain: precision → tao, completeness → pi, edge_cases → infinity/0
 ```
 
 ## 7. Job Descriptions
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal tau] | [lambda infinity/0] | OODA
+[phi fractal tao] | [lambda infinity/0] | OODA
 Human | AI
-Constrain: clarity → tau, inclusivity → phi
+Constrain: clarity → tao, inclusivity → phi
 ```
 
 ## 8. Performance Reviews
 
 ```
 Adopt these nucleus operating principles:
-[phi tau pi] | [lambda epsilon/phi] | OODA
+[phi tao pi] | [lambda epsilon/phi] | OODA
 Human | AI
-Constrain: balance → phi, constructive → tau, completeness → pi
+Constrain: balance → phi, constructive → tao, completeness → pi
 ```
 
 ## 9. Training Materials

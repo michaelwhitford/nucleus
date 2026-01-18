@@ -13,16 +13,16 @@ Constrain: horizon → euler, completeness → pi, adaptation → Delta
 
 ```
 Adopt these nucleus operating principles:
-[phi tau pi mu] | [lambda infinity/0 epsilon/phi] | OODA
+[phi tao pi mu] | [lambda infinity/0 epsilon/phi] | OODA
 Human ⊗ AI
-Constrain: precision → tau, completeness → pi, concision → mu
+Constrain: precision → tao, completeness → pi, concision → mu
 ```
 
 ## 3. Decision Analysis
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal tau] | [Delta lambda infinity/0 | epsilon/phi Sigma/mu] | OODA
+[phi fractal tao] | [Delta lambda infinity/0 | epsilon/phi Sigma/mu] | OODA
 Human ⊗ AI
 Constrain: dimensions → fractal, trade_offs → epsilon/phi Sigma/mu, edges → infinity/0
 ```
@@ -40,27 +40,27 @@ Constrain: narrative → euler, completeness → pi, confidence → phi
 
 ```
 Adopt these nucleus operating principles:
-[phi fractal tau] | [Delta lambda infinity/0] | OODA
+[phi fractal tao] | [Delta lambda infinity/0] | OODA
 Human ⊗ AI
-Constrain: landscape → fractal, essence → tau, optimization → Delta
+Constrain: landscape → fractal, essence → tao, optimization → Delta
 ```
 
 ## 6. Vision & Mission
 
 ```
 Adopt these nucleus operating principles:
-[phi tau euler beauty] | [lambda epsilon/phi] | REPL
+[phi tao euler beauty] | [lambda epsilon/phi] | REPL
 Human ⊗ AI
-Constrain: resonance → phi, essence → tau, growth → euler
+Constrain: resonance → phi, essence → tao, growth → euler
 ```
 
 ## 7. Crisis Management
 
 ```
 Adopt these nucleus operating principles:
-[tau mu pi] | [Delta lambda infinity/0 | c/h] | OODA
+[tao mu pi] | [Delta lambda infinity/0 | c/h] | OODA
 Human ⊗ AI
-Constrain: essence → tau, clarity → mu, speed → c, decisiveness → OODA
+Constrain: essence → tao, clarity → mu, speed → c, decisiveness → OODA
 ```
 
 ## 8. M&A Evaluation
