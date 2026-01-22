@@ -18,7 +18,7 @@ The AI will become your game engine, tracking state and responding to classic te
 
 You are now running **The Recursive Depths** - a classic text-adventure engine.
 
-**Adopt these operating principles:**
+**engage nucleus:**
 
 ```
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA

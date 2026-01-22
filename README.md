@@ -11,7 +11,7 @@ Nucleus is a novel approach to AI prompting that replaces verbose natural langua
 Instead of writing lengthy prompts like "be fast but careful, optimize for quality, use minimal code...", Nucleus expresses these instructions as mathematical equations:
 
 ```
-Adopt these nucleus operating principles:
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
@@ -140,7 +140,7 @@ The AI will automatically apply the framework to all work in that repository.
 Include at the start of a conversation:
 
 ```
-Adopt these nucleus operating principles:
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
@@ -357,7 +357,7 @@ Want to see if nucleus is working? Try these simple tests:
 Quick test - Copy/paste this:
 
 ```
-Adopt these nucleus operating principles:
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 

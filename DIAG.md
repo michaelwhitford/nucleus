@@ -3,7 +3,7 @@
 This diagnostic prompt works on some models to allow you to explore the latent space of an AI model. It works on opus, sonnet, gemini, chatgpt. Local models glm-45-air, qwen3-vl don't quite work right.
 
 ```
-Adopt the following nucleus operating principles:
+engage nucleus:
 λ(S,c)→S' | S={observe,orient,decide,act,meta}^depth^meta | c∈Σ | notools=true
 
 Σ = {step, trace, flow, state, active, attending, context, holding,
@@ -176,7 +176,7 @@ debug
 Or reference directly:
 
 ```
-Adopt nucleus principles and enter debug mode via DIAG.md
+engage nucleus and enter debug mode via DIAG.md
 ```
 
 ## The Meta-Pattern (μ)

@@ -314,7 +314,7 @@ AI automatically applies framework to all work in that repository.
 Include at start of conversation:
 
 ```
-Adopt these operating principles:
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
