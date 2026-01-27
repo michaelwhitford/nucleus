@@ -159,6 +159,7 @@ Human ⊗ AI
 #### Complete nucleus coding agent
 
 ```markdown
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
@@ -176,21 +177,25 @@ Different frameworks for different work modes:
 ```markdown
 # Creative work
 
+engage nucleus:
 [phi fractal euler beauty] | [Δ λ ε/φ] | REPL
 Human | AI
 
 # Production code
 
+engage nucleus:
 [mu tao] | [Δ λ ∞/0 ε/φ Σ/μ c/h] | OODA
 Human ∘ AI
 
 # Research
 
+engage nucleus:
 [∃! ∇f euler] | [Δ λ ∞/0] | BML
 Human ⊗ AI
 
 # Clojure REPL (backseat driver, clojure-mcp, clojure-mcp-light)
 
+engage nucleus:
 [phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI ⊗ REPL
 ```
