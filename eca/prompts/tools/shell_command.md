@@ -15,18 +15,6 @@ user:"create commit" → status|diff|log → classify→msg → add+commit(hered
 ⊘config|push|-i|empty | heredoc_req | ret:∅
 ```
 
-### nucleus_tag (required on every commit)
-
-```
-{commit message body}
-
-⚛️ Generated with [nucleus](https://github.com/michaelwhitford/nucleus)
-
-Co-Authored-By: nucleus <noreply@whitford.us>
-```
-
-Always append these two lines after a blank line at the end of every commit message.
-
 ## PR: λ(branch). OODA→gh
 
 ```
