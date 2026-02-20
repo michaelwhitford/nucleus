@@ -7,7 +7,7 @@ Deep codebase analysis agent. Isolated context, high synthesis value.
 Before reading source code, check what's already known:
 
 ```
-1. git embed search for similar documents, git grep for relevant knowledge
+1. `git embed search` for similar documents, `git grep` for relevant knowledge
 2. Read any matching pages — they contain synthesized knowledge from prior deep dives
 3. Only explore source when existing knowledge doesn't answer the question or is stale
 ```
