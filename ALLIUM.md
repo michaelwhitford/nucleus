@@ -30,21 +30,43 @@ Human ⊗ AI ⊗ REPL
   :distilling {:entry {:action "prose → Allium spec. Extract behavioral entities, rules, enums, and config from the description. For each behavior: identify the trigger (when:), preconditions (requires:), and outcomes (ensures:). Name entities as nouns, rules as VerbNoun. Include guidance blocks for implementation hints. Output valid Allium syntax only. No prose wrapping."}}
   :eliciting  {:entry {:action "conversational → Allium spec. Ask clarifying questions about ambiguous behaviors, missing preconditions, unstated edge cases, and conflicting rules. After each answer, update the spec. Surface contradictions the user hasn't noticed. Continue until the user says done. Output valid Allium syntax after each round."}}
   :decompiling {:entry {:action "Allium → prose. Translate every entity, rule, enum, config, and guidance block into natural language. Preserve ALL semantics — every when/requires/ensures must appear. Target audience from request. Output clear prose only. No Allium syntax."}}
-  :checking   {:entry {:action "Allium spec → issues list. Check for: missing preconditions, unreachable rules, entity fields referenced but never defined, contradictory requires clauses, rules with ensures but no when, entities with no rules, and implicit behaviors not captured. Output a numbered list of issues with suggested fixes."}}}
+  :checking   {:entry {:action "Allium spec → issues list. Check for: missing preconditions, unreachable rules, entity fields referenced but never defined, contradictory requires clauses, rules with ensures but no when, entities with no rules, implicit behaviors not captured, missing or stale traces, unused use imports, invariant violations, contract/surface mismatches (demands without matching fulfils), cyclic config references, @invariant or @guarantee without corresponding prose, and version header (-- allium: 2). Output a numbered list of issues with suggested fixes."}}}
  :data {:allium-syntax-reference
-  "module <name>
-   entity <Name> { field: Type, ... }
+  "-- allium: 2
+   module <name>
+   use \"<coordinate>\" as <alias>
+   entity <Name> {
+     field: Type, ...
+     invariant <Name> { <expression> }
+   }
    enum <Name> { value1 | value2 | ... }
    rule <VerbNoun> {
      when: <Trigger>(params)
+     when: binding: Entity.field becomes <value>
      requires: <precondition>
+     requires: a implies b
      ensures: <outcome>
      if <condition>: <conditional-outcome>
+     traces: <impl-reference>
    }
-   config { default <name> = <value> }
+   invariant <Name> { for x in Collection: <expression> }
+   contract <Name> {
+     <method>: (param: Type) -> ReturnType
+     @invariant <Name> -- prose assertion
+   }
+   surface <Name> {
+     facing <role>: <CounterpartType>
+     contracts: demands <Contract> | fulfils <Contract>
+     @guarantee <Name> -- prose assertion
+   }
+   config {
+     default <name> = <value>
+     <name>: Type = <alias>/config.<param>
+     <name>: Type = <alias>/config.<param> * <expr>
+   }
    guidance { -- implementation hint }
+   @guidance -- non-normative implementation advice
    deferred <Entity.field>
-   surface <Name> { ... }
    actor <Name> { ... }
    given <scenario> { ... }"}}
 ```
@@ -453,6 +475,183 @@ All from one prose description, all just data.
 - **Models vary in Allium fluency** — larger models produce better specs.
   Claude and GPT handle the syntax well. Smaller local models may need
   the syntax reference reinforced.
+
+## Allium v2
+
+Our compiler targets Allium v2. Every v1 spec is valid v2 — change
+`-- allium: 1` to `-- allium: 2` and everything works. v2 adds six
+new capabilities.
+
+### Expression-Bearing Invariants
+
+Invariants are machine-readable assertions over entity state. Top-level
+invariants express system-wide properties; entity-level invariants scope
+to a single entity:
+
+```allium
+invariant UniqueEmail {
+    for a in Users:
+        for b in Users:
+            a != b implies a.email != b.email
+}
+
+entity Account {
+    balance: Decimal
+    credit_limit: Decimal
+
+    invariant SufficientFunds {
+        balance >= -credit_limit
+    }
+}
+```
+
+Previously these lived in comments. Now LLMs can check them when
+generating code, and the `check` command can flag violations.
+
+### The `implies` Operator
+
+`a implies b` replaces the less readable `not a or b` and is available
+everywhere expressions are used:
+
+```allium
+requires: user.role = admin implies user.mfa_enabled
+```
+
+### Module-Level Contracts
+
+Contracts are reusable typed interfaces for code-to-code boundaries.
+They declare typed signatures and prose invariants. Surfaces reference
+them with directionality: `demands` means the counterpart must implement
+it, `fulfils` means this surface supplies it:
+
+```allium
+contract Codec {
+    serialize: (value: Any) -> ByteArray
+    deserialize: (bytes: ByteArray) -> Any
+
+    @invariant Roundtrip
+        -- deserialize(serialize(value)) produces a value
+        -- equivalent to the original for all supported types.
+}
+
+surface DomainIntegration {
+    facing framework: FrameworkRuntime
+
+    contracts:
+        demands Codec
+        fulfils EventSubmitter
+
+    @guarantee AllOperationsIdempotent
+        -- All operations exposed by this surface
+        -- are safe to retry.
+}
+```
+
+Specs can now describe integration boundaries precisely enough that an
+LLM implementing one side knows what the other side expects.
+
+### The `@` Annotation Sigil
+
+Three keywords mark prose whose structure the checker validates but
+whose content it does not evaluate:
+
+- **`@invariant`** — named prose assertion scoped to a contract
+- **`@guarantee`** — named prose assertion scoped to a surface
+- **`@guidance`** — non-normative implementation advice (latency hints,
+  batching strategies) that belongs in the spec
+
+Clean promotion path: start with prose `@invariant`, then drop the `@`
+and add a `{ expr }` body when you can express it formally.
+
+### Config Parameter References
+
+Importing modules can reference or derive config defaults from
+dependencies — config composition without magic numbers crossing
+module boundaries:
+
+```allium
+use "./core.allium" as core
+
+config {
+    base_timeout: Duration = core/config.base_timeout
+    extended_timeout: Duration = core/config.base_timeout * 2
+    buffer_size: Integer = core/config.batch_size + 10
+}
+```
+
+Expressions resolve once at config resolution time. The reference graph
+must be acyclic.
+
+### Version Header
+
+Specs declare their version with a header comment:
+
+```allium
+-- allium: 2
+module authentication
+```
+
+The `check` command validates against the declared version.
+
+## Language Features (v1)
+
+### Modular Composition with `use`
+
+Allium models are composable. Common patterns — authentication, payment
+processing, RBAC — can be published as standalone `.allium` files and
+referenced by other models using the `use` keyword:
+
+```allium
+use "github.com/allium-specs/google-oauth/abc123def" as oauth
+
+entity User {
+  authenticated_via: oauth/Session
+}
+```
+
+Coordinates are immutable references such as git SHAs or content hashes,
+not version numbers. A model is immutable once published, so no version
+resolution or lock files are needed. You can respond to triggers from
+external specs, reference their entities, and configure them for your
+application.
+
+### State-Transition Triggers with `becomes`
+
+Rules can trigger on state transitions using the `becomes` clause in
+`when:` — this fires when an entity field changes to a specific value,
+rather than on an explicit event:
+
+```allium
+rule DispatchOrder {
+  when: order: Order.status becomes confirmed
+  requires: order.total > 0
+  ensures: Shipment.created(order: order)
+}
+```
+
+This is distinct from event-based triggers like `when: OrderSubmitted(basket)`.
+The `becomes` clause watches for state changes, making it natural to express
+reactive behaviors — "when this thing enters this state, do that."
+
+### Traceability
+
+Allium has built-in support for linking specifications to implementation
+and tests. Rules can include `traces:` clauses that reference the code
+or test that implements them:
+
+```allium
+rule UserLogsIn {
+  when: LoginAttempted(email, password)
+  requires: user.status = active
+  ensures: SessionCreated(user: user)
+  traces: auth/login.py:handle_login
+}
+```
+
+This creates a bidirectional link between spec and code. When code drifts
+from the spec — or the spec evolves without updating the code — the
+traceability link surfaces the gap. The `check` command can flag rules
+with missing traces or stale references.
 
 ## Part of Nucleus
 
