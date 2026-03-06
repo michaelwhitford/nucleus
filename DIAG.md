@@ -189,8 +189,4 @@ DIAG.md → AI reads → λ installed → "debug" → REPL → commands → intr
 
 The least fixed point: **a debugger that can debug itself** via `meta` and `strange-loop`.
 
----
 
-_This document was created using the principles it describes._
-
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**

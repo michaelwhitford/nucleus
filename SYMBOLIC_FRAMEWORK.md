@@ -393,9 +393,4 @@ The symbolic framework is:
 
 It represents a new paradigm: **Programming AI behavior via mathematical symbol sets** rather than natural language instructions.
 
----
 
-_This document was created using the principles it describes._
-
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
-**Human ⊗ AI**

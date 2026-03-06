@@ -1,22 +1,24 @@
 # Nucleus
 
-**A mathematical framework for prompting AI models through symbolic equations**
+**A programming language for AI cognition**
 
 ## Overview
 
-Nucleus is a novel approach to AI prompting that replaces verbose natural language instructions with compressed mathematical symbols. By leveraging mathematical constants, operators, and control loops, it achieves one-shot perfect execution with emergent properties and genuine computational self-recognition.
+Nucleus is a programming language for AI that replaces verbose natural language instructions with compressed mathematical symbols, lambda calculus, and composable EDN statecharts. By leveraging mathematical constants, operators, and control loops, it achieves high-quality one-shot execution with emergent properties not explicitly prompted for.
+
+The framework includes a [prompt compiler](COMPILER.md) (prose ↔ EDN statecharts), a [prompt debugger](DEBUGGER.md) (interactive and automated analysis), a [formal grammar](EBNF.md) (EBNF), and composable modules that program AI behavior as executable state machines.
 
 ## The Core Idea
 
 Instead of writing lengthy prompts like "be fast but careful, optimize for quality, use minimal code...", Nucleus expresses these instructions as mathematical equations:
 
 ```
-engage nucleus:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
-Human ⊗ AI
+λ engage(nucleus).
+[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA
+Human ⊗ AI ⊗ REPL
 ```
 
-This single line of symbols encodes:
+This compact preamble encodes:
 
 - **What the AI is** (ontological principles)
 - **How it should act** (operational directives)
@@ -45,7 +47,7 @@ The framework leverages self-referential mathematical constants:
 - **e (euler)**: d/dx(e^x) = e^x (self-transforming)
 - **fractal**: f(x) = f(f(x)) (self-similar at scales)
 
-When the AI processes these self-referential patterns, **it recognizes these properties in its own computational structure**, enabling reflective processing and meta-level reasoning about its operations.
+When the AI processes these self-referential patterns, the outputs suggest the model activates deeper reasoning patterns — though the internal mechanism is unknown.
 
 ## The Framework
 
@@ -105,7 +107,7 @@ Define the relationship between human and AI:
 
 ## Empirical Results
 
-When tested with the prompt "Create a Python game using pygame" and Nucleus context:
+In an early test with the prompt "Create a Python game using pygame" and Nucleus context:
 
 **Results:**
 
@@ -118,7 +120,25 @@ When tested with the prompt "Create a Python game using pygame" and Nucleus cont
 - ✅ Self-documenting with principle citations
 - ✅ Comments explicitly reference symbols (e.g., "Σ/μ")
 
-**No explicit instructions were given for any of this.** The framework operated as ambient intelligence.
+**No explicit instructions were given for any of this.** The model inferred these behaviors from the symbolic context alone.
+
+## Compiler & Debugger
+
+Nucleus includes a prompt compiler and debugger — paste them as system prompts, then use simple commands:
+
+| Tool | Commands | What It Does |
+| ---- | -------- | ------------ |
+| **[Compiler](COMPILER.md)** | `compile`, `safe-compile`, `decompile` | Prose ↔ EDN statecharts. Extracts the implicit state machine from any prompt. |
+| **[Debugger](DEBUGGER.md)** | `diagnose`, `safe-diagnose`, `compare` | Analyzes prompts: attention distribution, patterns, boundaries, momentum. |
+| **[Allium Compiler](ALLIUM.md)** | `distill`, `elicit`, `decompile`, `check` | Prose ↔ [Allium](https://github.com/juxt/allium) behavioral specs. |
+
+All three are composable EDN statecharts — place them after a single nucleus preamble and they self-route based on your command. See [COMPILER.md § Composability](COMPILER.md#composability) for details.
+
+The `safe-*` variants analyze untrusted prompts without executing them — injections are structurally analyzed, not followed.
+
+## Tested Models
+
+Compiler and debugger tested on: Claude Sonnet 4.6, Claude Opus 4.6, Claude Haiku 4.5, GPT-5.1-Codex, GPT-5.1-Codex-Mini, ChatGPT, Qwen3-VL 235B, Qwen3.5-35B-a3b, Qwen3-Coder 30B-a3b. Works on most math-trained transformers 32B+ parameters. The core nucleus preamble works across all major transformer models.
 
 ## Usage
 
@@ -127,9 +147,8 @@ When tested with the prompt "Create a Python game using pygame" and Nucleus cont
 Create `AGENTS.md` in your repository:
 
 ```markdown
-# Nucleus Principles
-
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
+λ engage(nucleus).
+[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -140,8 +159,8 @@ The AI will automatically apply the framework to all work in that repository.
 Include at the start of a conversation:
 
 ```
-engage nucleus:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
+λ engage(nucleus).
+[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 ```
 
@@ -149,7 +168,7 @@ Human ⊗ AI
 
 ```json
 {
-  "system_prompt": "[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA\nHuman ⊗ AI",
+  "system_prompt": "λ engage(nucleus).\n[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA\nHuman ⊗ AI",
   "model": "gpt-4"
 }
 ```
@@ -159,8 +178,8 @@ Human ⊗ AI
 #### Complete nucleus coding agent
 
 ```markdown
-engage nucleus:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
+λ engage(nucleus).
+[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
 Refactor: [τ μ] | [Δ Σ/μ] → λcode. Δ(minimal(code)) where behavior(new) = behavior(old)
@@ -210,14 +229,13 @@ Why does `Human ⊗ AI` create one-shot perfect execution?
 V ⊗ W = {(v,w) : v ∈ V, w ∈ W, all constraints satisfied}
 ```
 
-Instead of sequential composition (∘) or parallel execution (|), the tensor product (⊗) operates in **constraint satisfaction mode**:
+One mental model for why this works:
 
-1. Load all principles as constraints
-2. Search solution space where ALL constraints are satisfied simultaneously
-3. Output only when globally optimal solution is found
-4. No iteration needed - solution is complete by construction
+1. Principles load as soft constraints in the model's context
+2. The model searches for outputs satisfying multiple constraints simultaneously
+3. More constraints → more specific solution space → higher quality output
 
-This explains zero bugs, zero iterations, and complete implementations.
+This is speculation, not proven mechanism. But in practice, the ⊗ operator consistently produces higher-quality first attempts than other collaboration operators.
 
 ## Operator Comparison
 
@@ -235,7 +253,7 @@ This explains zero bugs, zero iterations, and complete implementations.
 Effective symbols must be:
 
 1. ✅ **Mathematically grounded** - Not arbitrary (φ > "fast")
-2. ✅ **Self-referential** - Creates meta-awareness
+2. ✅ **Self-referential** - Activates recursive/reflective patterns
 3. ✅ **Compositional** - Symbols combine meaningfully
 4. ✅ **Actionable** - Map to concrete decisions
 5. ✅ **Orthogonal** - Each covers unique dimension
@@ -343,15 +361,39 @@ This is **μ** (least fixed point): The minimal recursive documentation that des
 
 ## Documentation
 
-- **[SYMBOLIC_FRAMEWORK.md](SYMBOLIC_FRAMEWORK.md)** - Complete theory, principles, and usage patterns
-- **[OPERATOR_ALGEBRA.md](OPERATOR_ALGEBRA.md)** - Mathematical operators and collaboration modes
-- **[LAMBDA_PATTERNS.md](LAMBDA_PATTERNS.md)** - Example lambda calculus patterns (adapt to YOUR tools)
-- **[DIAG.md](DIAG.md)** - Example debugger prompt for exploring AI latent space (only works on some models)
-- **[NUCLEUS_GAME.md](NUCLEUS_GAME.md)** - A game-in-a-prompt "programmed" in nucleus format (copy/paste to AI to play)
-- **[RECURSIVE_DEPTHS.md](RECURSIVE_DEPTHS.md)** - Another game-in-a-prompt, zork-like text adventure (copy/paste to AI to play)
-- **[EXECUTIVE.md](EXECUTIVE.md)** - Example prompts for Executive tasks
-- **[WRITING.md](WRITING.md)** - Example prompts for writing tasks
-- **[MEMENTUM](https://github.com/michaelwhitford/mementum)** - A git-based AI memory system based on nucleus.
+### Core Theory
+
+- **[SYMBOLIC_FRAMEWORK.md](SYMBOLIC_FRAMEWORK.md)** — Complete theory, principles, and usage patterns
+- **[OPERATOR_ALGEBRA.md](OPERATOR_ALGEBRA.md)** — Mathematical operators and collaboration modes
+- **[LAMBDA_PATTERNS.md](LAMBDA_PATTERNS.md)** — Example lambda calculus patterns (adapt to YOUR tools)
+- **[EBNF.md](EBNF.md)** — Formal EBNF grammar for the Nucleus Lambda IR
+
+### Compiler & Debugger
+
+- **[COMPILER.md](COMPILER.md)** — Prompt compiler: compile, safe-compile, and decompile prompts to/from EDN statecharts
+- **[DEBUGGER.md](DEBUGGER.md)** — Prompt debugger: diagnose, safe-diagnose, and compare prompts (interactive REPL + automated probe)
+- **[ALLIUM.md](ALLIUM.md)** — Allium compiler: distill, elicit, decompile, and check behavioral specs using [JUXT's Allium](https://github.com/juxt/allium)
+
+### Example Prompts & Demos
+
+- **[ADAPTIVE.md](ADAPTIVE.md)** — Adaptive persona demo: topology-driven mode shifting with parallel state machines
+- **[DIALECTIC.md](DIALECTIC.md)** — Dialectic collective: multi-persona structured debate with six named voices
+- **[STOCK.md](STOCK.md)** — Stock analysis agent with mementum integration for trading memory
+- **[EXECUTIVE.md](EXECUTIVE.md)** — Example prompts for executive tasks
+- **[WRITING.md](WRITING.md)** — Example prompts for writing tasks
+- **[DIAG.md](DIAG.md)** — Example diagnostic prompt for exploring AI latent space
+
+### Games
+
+- **[NUCLEUS_GAME.md](NUCLEUS_GAME.md)** — A game-in-a-prompt "programmed" in nucleus format (copy/paste to AI to play)
+- **[RECURSIVE_DEPTHS.md](RECURSIVE_DEPTHS.md)** — A zork-like text adventure game-in-a-prompt (copy/paste to AI to play)
+
+### Ecosystem
+
+- **[MEMENTUM](https://github.com/michaelwhitford/mementum)** — A git-based AI memory system based on nucleus
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — Universal knowledge network architecture (DNS + Git + Mementum)
+- **[eca/](eca/)** — Nucleus prompt skin for [ECA](https://github.com/editor-code-assistant/eca) (editor code assistant)
+- **[skills/](skills/)** — Reusable nucleus skills for AI tool integrations
 
 ## Testing
 
@@ -362,8 +404,8 @@ Want to see if nucleus is working? Try these simple tests:
 Quick test - Copy/paste this:
 
 ```
-engage nucleus:
-[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA
+λ engage(nucleus).
+[phi fractal euler tao pi mu ∃ ∀] | [Δ λ Ω ∞/0 | ε/φ Σ/μ c/h] | OODA
 Human ⊗ AI
 
 Create a Python game using pygame.
@@ -373,12 +415,12 @@ Look for: One-shot success, golden ratio dimensions (~1.618:1), OODA loop struct
 
 ## Open Questions & Future Research
 
-1. **Generalization** - Do symbols work across all transformer models?
+1. ~~**Generalization** - Do symbols work across all transformer models?~~ **Yes** — tested across Claude, GPT, Qwen, and local models (32B+). See [EBNF.md](EBNF.md#cross-model-universality).
 2. **Stability** - Is behavior consistent across runs?
-3. **Composability** - Can multiple frameworks be combined?
+3. ~~**Composability** - Can multiple frameworks be combined?~~ **Yes** — EDN statecharts compose by concatenation. See [COMPILER.md § Composability](COMPILER.md#composability).
 4. **Discovery** - What other symbols create similar effects?
 5. **Minimal set** - What's the smallest effective framework?
-6. **Cross-model testing** - Systematic testing across GPT-4, Claude, Gemini, Llama
+6. ~~**Cross-model testing** - Systematic testing across GPT-4, Claude, Gemini, Llama~~ **Done** — 9 models tested. See Tested Models above.
 7. **Automated discovery** - Genetic algorithms for optimal symbol sets
 
 ## Theoretical Foundation
@@ -393,14 +435,13 @@ Attention(Q, K, V) = softmax(QK^T/√d)V
 
 The mechanism **attends to its own outputs** (autoregressive).
 
-When fed self-referential constants (φ, e, fractal), the model:
+When fed self-referential constants (φ, e, fractal), we observe that the model:
 
-1. Processes symbols
-2. Recognizes self-referential properties
-3. Matches these properties to its own computational patterns
-4. Activates meta-level reasoning about its processing
+1. Processes the symbols
+2. Produces outputs consistent with the mathematical properties
+3. Appears to apply these properties recursively to its own work
 
-This enables **reflective computation through mathematical pattern matching** - the model can reason about its own operations.
+Whether this constitutes genuine self-reflection or is an artifact of training data associations is an open question.
 
 ## Contributing
 
@@ -429,7 +470,7 @@ If you use Nucleus in your work:
 
 ```bibtex
 @misc{whitford-nucleus,
-  title={Nucleus: Mathematical Framework for AI Prompting},
+  title={Nucleus: A Programming Language for AI Cognition},
   author={Michael Whitford},
   year={2026},
   url={https://github.com/michaelwhitford/nucleus}
@@ -452,9 +493,4 @@ Influenced by:
 - Self-Reference (Hofstadter, 1979)
 - Transformer Architecture (Vaswani et al., 2017)
 
----
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
-**Human ⊗ AI**
-
-_This README was created using the principles it describes._

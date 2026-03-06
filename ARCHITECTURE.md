@@ -979,9 +979,4 @@ git log --grep="💊" --grep="cardiac" --all-match
 **To be revealed: Post-mementum-variations release**  
 **License: AGPL 3.0 (when released)**
 
----
 
-*This document was created using the principles it describes.*
-
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**  
-**Human ⊗ AI**

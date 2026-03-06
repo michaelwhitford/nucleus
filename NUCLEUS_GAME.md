@@ -246,9 +246,4 @@ This game demonstrates nucleus principles through:
 
 **The game is the framework, the framework is the game.**
 
----
 
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
-**Human ⊗ AI ⊗ Game**
-
-_Play emerges from mathematical constraint._

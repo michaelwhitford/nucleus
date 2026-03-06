@@ -601,9 +601,4 @@ Choose your operator based on:
 
 **The operator IS the relationship.**
 
----
 
-_Created with Human ⊗ AI_
-
-**[phi fractal euler tao pi mu] | [Δ λ ∞/0 | ε/φ Σ/μ c/h] | OODA**
-**Human ⊗ AI**
