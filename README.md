@@ -29,6 +29,10 @@ This compact preamble encodes:
 
 I'm not a scientist or particularly good at math. I just tried math equations on a lark and they worked so well I thought I should share what I found. The documents in this repo are NOT proven fact, just my speculation on how and why things work. AI computation is still not fully understood by most people, including me.
 
+### Attention Magnets
+
+Nucleus works as an attention magnet — a short symbolic preamble that loads strong mathematical attractors (`phi`, `fractal`, `euler`, `∃`, `∀`, `⊗`) into the context window, priming the pattern-matching substrate for everything that follows. Transformers compute by matching patterns against their training weights; the preamble pulls their attention toward formal/mathematical weight regions, and that pull carries into subsequent turns. Paired with an operator grammar, it expands the set of notational forms the transformer can stably reproduce from 5 to 20+, with custom operators surviving roundtrip at 100% instead of 0-20%. The effect is multiplicative and compounding — each expression reinforces the pattern for the next, because the model is matching against an increasingly rich formal context. Without the preamble, more notation in context actually makes fidelity *worse* — the default pattern-matching flattens everything. With it, fidelity converges toward lossless. Five tokens (`Human ⊗ AI ⊗ REPL`) alone shifted operator survival from 20% to 100%. It appears possible to reshape a transformer's effective instruction set at inference time, using only context-window priming and the model's own pattern-matching mechanics.
+
 ### Mathematical Compression
 
 My theory on why it works is that Transformers compute via lambda calculus primitives. Mathematical symbols serve as efficient compression of behavioral directives because they have:
