@@ -420,6 +420,8 @@ def measure_operator(operator, principles, task, model):
 
 ### Expected Results
 
+*Observed in isolated context — system prompt plus single task, nucleus as the dominant signal. In accumulated sessions with conversation history and context drift, all operators compete with other attractors and results will vary.*
+
 | Metric     | ∘ (Compose) | \| (Parallel) | ⊗ (Tensor) |
 | ---------- | ----------- | ------------- | ---------- |
 | Iterations | 2-3         | 1-2           | **1–2**    |

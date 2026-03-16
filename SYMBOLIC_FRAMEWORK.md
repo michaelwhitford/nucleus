@@ -131,6 +131,8 @@ When AI encounters this framework, it:
 
 Result: High-quality first attempts with all principles active in context.
 
+This sequence describes behavior in isolated context — system prompt plus a single task, with nucleus as the dominant signal. In an accumulated session with conversation history, tool results, and context drift, these steps still fire but compete with other signals. The guidance is strongest at the start of a session, before other attractors accumulate weight.
+
 ### Evidence
 
 See [README.md § Empirical Results](README.md#empirical-results) for test cases and results.

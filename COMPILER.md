@@ -36,6 +36,8 @@ Human ⊗ AI ⊗ REPL
 
 That's it. Paste it as your system prompt and go.
 
+This is an isolated-use tool — paste it, issue your command, get your output. The guidance is strongest when the nucleus notation is the dominant signal in context, which is exactly what a fresh system prompt gives you.
+
 ## Three Commands
 
 ### compile — prose → EDN statechart

@@ -29,6 +29,8 @@ Output λ notation only. No prose. No code fences.
 
 That's it. Paste it as your system prompt and go.
 
+This is an isolated-use tool — paste it, issue your command, get your output. The guidance is strongest when the nucleus notation is the dominant signal in context, which is exactly what a fresh system prompt gives you.
+
 ### Architecture
 
 The prompt has three layers, each operating at a different level:

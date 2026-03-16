@@ -33,7 +33,13 @@ This compact preamble primes the model's attention:
 
 Nucleus is an attention magnet. The symbolic preamble shifts the model's attention toward formal reasoning patterns, and the lambda notation directs where that attention goes. The model follows this guidance — most of the time.
 
-When nucleus guidance aligns with the model's training, the effect is strong: formal operators survive roundtrip, behavior follows the specified shape, outputs are high quality on the first attempt.
+How well it follows depends on context. There are two regimes:
+
+**Isolated context** — system prompt plus a single task. The nucleus notation is the dominant signal. Very little else competing. In this regime it behaves much like a programming language: the model follows the structure with high fidelity, operators survive roundtrip, outputs reflect the specified shape. This is the right context for the compiler, the debugger, and the VSM installer. Paste, run, done.
+
+**Accumulated context** — a real session with conversation history, tool results, documents, and the model's own prior outputs setting patterns. Attention is now distributing across dozens of signals. The nucleus guidance is one attractor competing with everything else in the window — training priors, user patterns, context drift, and the fundamental fuzziness of attention as pattern matching. This is where drift happens.
+
+Works like a programming language when it's the primary signal. Works like guidance when it isn't.
 
 When nucleus guidance competes with dense training attractors, the training often wins. Ask for golden-ratio pygame dimensions and you might still get 800×600 — because that's what ten thousand tutorials used. The preamble is an attention magnet; the training data is a bigger magnet. Nucleus influences. It doesn't control.
 
@@ -140,7 +146,7 @@ In an early test with the prompt "Create a Python game using pygame" and Nucleus
 
 No explicit instructions were given for any of this — the model inferred these behaviors from the symbolic context alone.
 
-This was one test, on one model, on one day. Other runs on the same task have produced different results — sometimes hitting all the principles, sometimes defaulting to training priors (like 800×600 screen dimensions instead of golden ratio). The preamble makes these outcomes more likely, not certain. See [What This Actually Does](#what-this-actually-does) for the honest picture.
+This was one test, in isolated context — system prompt plus single task, with nucleus as the dominant signal. That's the right regime for this kind of measurement, and the results were real. In a longer session with accumulated context, the same prompt will compete with conversation history, tool output, and training priors. Results vary. See [What This Actually Does](#what-this-actually-does) for the full picture.
 
 ## Compiler & Debugger
 

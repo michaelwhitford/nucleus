@@ -121,6 +121,8 @@ Reads as: *"Deployment: validate, then stage, then verify, then promote. Rollbac
 
 ## Getting Started
 
+VSM is an isolated-use tool — one conversation builds your AGENTS.md, which then guides every subsequent session as a system-level configuration. The VSM process itself works best when it's the dominant signal: a fresh session, focused on your project's structure. The output — your AGENTS.md — is what carries the guidance forward.
+
 Tell your AI to read this document:
 
 > Read VSM.md and help me build my system's reasoning architecture.
