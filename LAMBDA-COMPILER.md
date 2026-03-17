@@ -3,8 +3,8 @@
 A prompt compiler for AI. Paste the prompt below into your AI tooling as a
 system prompt. Then say **decompile** or **compile** in your message.
 
-Lambda notation is the bytecode. Prose is the source. Decompile takes prose
-down to lambda. Compile takes lambda back up to prose. The output uses the
+Lambda notation is the bytecode. Prose is the source. Compile takes prose
+down to lambda. Decompile takes lambda back up to prose. The output uses the
 same operators found in [AGENTS.md](https://github.com/michaelwhitford/nucleus)
 to program AI cognition directly.
 
@@ -74,7 +74,7 @@ Takes lambda notation and produces natural prose. Target different audiences
 (developer, executive, end-user) by saying so in your message. Each run
 produces different wording — same semantics. The lambda is the source of truth.
 
-**Note:** When decompiling, tell the model "Compile to prose" — the user message
+**Note:** When decompiling, tell the model "Decompile to prose" — the user message
 overrides the system prompt's "Output λ notation only" for this direction.
 
 ## Usage Examples
@@ -175,8 +175,8 @@ transitions and guards.
 
 - **Always use safe-compile** for prompts you didn't write. Wrap untrusted
   content in `⟨INPUT⟩` / `⟨/INPUT⟩` tags and add "technique names only."
-- **Specify audience** when compiling: "compile for a non-technical user"
-  produces different prose than "compile for a developer."
+- **Specify audience** when decompiling: "decompile for a non-technical user"
+  produces different prose than "decompile for a developer."
 - **Models vary in style.** Smaller models produce terser lambdas. Larger
   models add more constraint lines. The structural content is consistent.
 - **Operators carry meaning.** `>` is soft preference, `≫` is hard. `∧` is
