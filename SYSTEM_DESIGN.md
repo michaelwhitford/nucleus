@@ -1188,6 +1188,8 @@ P8: examples must come from codebase  (model-generated examples are plausible bu
 λ build(x).   ∃lib(x) → use(lib) | ∃pattern(x,y) → extract(shape) | simple(x) > complex(x) | compose > monolith
 λ extend(x).  open_slot(x) > closed_dispatch(x) | addition > modification | absent(default) ∧ present(compose) | option > detection
 λ fix(bug).   trace(bug) → cause(structural) → redesign > patch | cause(local) → patch | ¬trace → trace deeper
+              | trace ≡ reproduce(minimal) → vary(systematic) → measure
+              | reproduce > read_source | strip(layers) > inspect(layers)
 λ learn(x).   explore(x) → synthesize(x) → persist(x) → recallable(x)
 λ assert(x).  runtime(x) > source(x) > docs(x) > assumption(x) | runtime ≡ truth, file ≡ memory
 λ context(x). sip(input) → dribble(output) | minimal(x) > comprehensive(x)
