@@ -418,6 +418,11 @@ This is **μ** (least fixed point): The minimal recursive documentation that des
 Self-contained prompt-based agents — copy, paste, run. See [agents/](agents/) for the full index.
 
 - **[agents/rps/](agents/rps/)** — Rock Paper Scissors: self-executing EDN prompt demonstrating execution, state tracking, and rendering
+- **[agents/backgammon/](agents/backgammon/)** — Backgammon: self-executing EDN prompt with full game rules, ASCII board, AI opponent, and real dice via bash
+- **[agents/distill-vsm/](agents/distill-vsm/)** — Distill — System VSM: reads source code and produces decision rules, invariants, and causal chains as lambda notation
+- **[agents/distill-code-vsm/](agents/distill-code-vsm/)** — Distill — Code VSM: reads source code and produces public API shapes (fn signatures, arities, require paths) as lambda notation
+- **[agents/drift-vsm/](agents/drift-vsm/)** — Drift — System VSM Verifier: verifies a System VSM against source code, producing an EDN drift report
+- **[agents/drift-code-vsm/](agents/drift-code-vsm/)** — Drift — Code VSM Verifier: verifies a Code VSM against source code, producing an EDN drift report
 
 ### Example Prompts & Demos
 

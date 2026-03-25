@@ -28,3 +28,8 @@ agents/
 | Agent | Description |
 |-------|-------------|
 | [rps](rps/) | Rock Paper Scissors — self-executing EDN prompt demonstrating execution, state tracking, and rendering |
+| [backgammon](backgammon/) | Backgammon — self-executing EDN prompt with full game rules, ASCII board, AI opponent, and real dice via bash |
+| [distill-vsm](distill-vsm/) | Distill — System VSM: reads source code and produces a System VSM of decision rules, invariants, and causal chains as lambda notation |
+| [distill-code-vsm](distill-code-vsm/) | Distill — Code VSM: reads source code and produces a Code VSM of public API shapes (fn signatures, arities, require paths) as lambda notation |
+| [drift-vsm](drift-vsm/) | Drift — System VSM Verifier: verifies a System VSM against source code, producing an EDN drift report |
+| [drift-code-vsm](drift-code-vsm/) | Drift — Code VSM Verifier: verifies a Code VSM against source code, producing an EDN drift report |

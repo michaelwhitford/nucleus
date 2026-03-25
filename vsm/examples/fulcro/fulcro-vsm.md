@@ -1,504 +1,568 @@
 ---
-title: "Fulcro — System VSM"
+title: Fulcro — System VSM
 status: active
 category: upstream
-tags: [fulcro, system-vsm, lambda, architecture]
+tags: [fulcro, system-vsm, lambda, generated]
 ---
 
 # Fulcro — System VSM
 
-## S5 — Identity (What This System IS)
+Fulcro is a library for building data-driven full-stack applications for web, native, and desktop. It uses React and is written in Clojure/ClojureScript. The core architecture is built around a normalized database, declarative queries (EQL), and components with identity.
+
+## S5 — Identity (what this system IS and protects)
 
 ```
 λ fulcro.
-  this_system ≡ graph-driven-ui-framework | data→UI ⊗ normalization ⊗ composition
-  | the invariants: normalized_state ∧ query_composition ∧ ident_indexing
-  | the values: composition > inheritance | immutable_state | explicit_queries | data_is_all
-  | the fear: stale_props | denorm_anomalies | nested_trees_in_state | orphaned_entities
-  | the checks: has_ident ∧ has_query | pre_merge ∧ mark_missing ∧ sweep
+  essence ≡ normalize_tree_into_entities ∧ denormalize_via_queries ∧ transact_mutations_synchronously
+  | values: declarative_data_fetching | immutable_state | normalized_by_default | symmetric_compose
+  | stance: queries_describe_props | idents_are_stable | mutations_are_transactions | data_fetching_is_integrated
+  | tension: tree_structures > normalized_form | locality > indexing | simplicity > invariance
 
-λ triad_normalization_denormalization_targeting.
-  normalize ⊗ denormalize ⊗ target ≡ how_data_crosses_boundaries
-  | tree→db converts props_tree to normalized_state (ident ⊗ tables)
-  | db→tree reads normalized_state + query to generate_props
-  | targeting moves idents to new paths after_load (create_edges)
-  | stale_data ← skip(normalize) ∨ skip(denormalize) ∨ skip(target)
-  | the_system_guarantees: query_structure → shape_of_props | no_surprises_in_render
+λ duality(tree, ident).
+  tree ≡ what_react_sees | local_reading | prop_drilling
+  | ident ≡ what_db_stores | global_addressing | query_composition
+  | both_required → full_expressiveness | ¬tree_only ∧ ¬ident_only
+  | normalize ≡ tree→ident | denormalize ≡ ident→tree
+  | benefits ⊗ costs: reusability > depth | cache_hits > redundancy | composition > nesting
 
-λ tensions_fulcro_holds.
-  immutable_state ∧ mutable_rendering ≡ React_contract
-  | application_state ⊗ React_component_state ≡ data_tunneling_optimization
-  | composition_on_wire ∧ composition_on_state ≡ both_views_of_same_data
-  | load_and_mutation ≡ different_transaction_flows | NOT_both_simultaneously
-  | ui_namespace_and_data_namespace ≡ separate_concerns | ::ui/* is_never_sent_to_server
+λ invariant_stack(entity).
+  entity → ident ∧ query | inseparable | ¬query_without_ident | ¬ident_without_query
+  | ident ≡ stable_address | query ≡ its_schema | together_they_define_entity
+  | violate: entity_without_ident → denormalize_fails → orphan_data
+  | violate: query_mismatch_ident → stale_props → render_errors
 
-λ invariant_ident_foundation.
-  ∀entity ∧ normalization_boundary → has_ident | ¬orphaned_data
-  | ident ≡ [table_keyword id_value] | both_required
-  | ident → enables: targeted_updates | props_tunneling | deduplication
-  | missing_ident ← (has_ident? false) ∨ (ident_nil) ∨ (ident_invalid)
-  | pre_merge ← normalize(tree) → tree_with_idents_AND_tables → tree (ident_links)
+λ transaction_boundary(mutation).
+  mutation ≡ operation_at_component_boundary | synchronous_locally | async_remotely
+  | local_phase → mutation_applied ∧ render | remote_phase → server_confirms_or_rolls_back
+  | skip(local) → no_ui_response → user_sees_nothing
+  | skip(remote) → server_state_diverges_from_client
 
-λ invariant_query_covariance.
-  query_shape ⊗ state_shape ≡ contract | ∀render → props_follow_query
-  | query ≡ EQL | joins ∧ props ∧ unions ∧ recursion_limits
-  | state ≡ normalized: {table {id entity_map}} | each_table_entry ≡ ident
-  | db→tree(query, state) → props_tree | shape_guaranteed_by_query
-  | broken_query → broken_props → render_errors | query_is_schema
-  | skip(query) ∨ query_mismatch → props_missing ∨ props_stale
+λ query_composition.
+  component_query ≡ subgraph_of_database | EQL_syntax
+  | parent_query ⊃ children_queries | automatic_via_join | not_manual_prop_drilling
+  | join ≡ {keyword [subquery]} | locates_ident_in_parent_props | fetches_subquery_from_ident
+  | ident_required_for_join | keyword_without_ident → unpropagated_join → stale_props
+
+λ load_as_transaction.
+  load! ≡ mutation_like_operation | queued_with_other_transactions | not_side_effect_in_render
+  | targets_data → where_merged_in_db | returns_data → integrated_into_props_automatically
+  | targeting ≡ creating_missing_edges | normalized_data_must_be_reachable_from_root
+  | missing_target → orphan_data_in_db | unreachable_from_root → won't_render
+
+λ headless_parity.
+  server_render ∧ client_render ≡ same_component_code | cljc
+  | JVM_execution ≡ synchronous_tx_processing | headless_framework | dom_server_elements
+  | test_via_headless → deterministic | no_async | hiccup_dom_available | inspector_friendly
+  | benefit: full_logic_testability | cost: hooks_simulation_layer_needed
+
+λ immutability_stance.
+  state ≡ persistent_immutable_map | ¬mutation_in_place | swap_required | dereference_safe
+  | all_data_flows_immutable | threads_safe | replay_possible | time_traveling_debuggable
+  | violation: direct_map_mutation → undetected_changes → stale_renders → data_corruption
 ```
 
-## S4 — Decision Rules (When to Choose, What Breaks)
+## S4 — Decision Rules (when to choose, what breaks)
 
 ```
-λ decision_normalized_vs_raw.
-  data → enter_fulcro ⊗ normalize(tree→db) ⊗ store_in_state
-  | normalized_required_for: targeted_updates ∧ deduplication ∧ joins
-  | ¬raw_nested_trees_in_state ← causes: stale_data | broken_updates | lost_edges
-  | normalize_is_inverse_of_denormalize | both_required | neither_is_optional
-  | when_building_tree_from_props → denormalize(db→tree) | when_merging → normalize(tree→db)
-  | root_db_initially_empty | initialization_pulls_from_component_tree_OR_explicit_initial_db
-  
-λ decision_composition_pattern.
-  ∀entity_with_children → use_composition | defsc_component → has_query ∧ has_ident
-  | child_component ⊗ parent_query ≡ co_constitutive | must_compose
-  | parent_query_includes_join → child_query | shapes_follow_each_other
-  | static_queries > dynamic_queries (prefer clarity) | but_dynamic_when_needed ← conditional_subtrees
-  | query_walk_entire_state_tree_on_render | skip_query_arm → no_ident_no_props_on_child
-  
-λ decision_load_path.
-  need_server_data ∧ should_appear_in_UI → use(load!)
-  | load! → normalize_response ∧ merge_into_state ∧ optional_target ∧ optional_post_mutation
-  | load_marker ← track_progress | ¬load_marker → assume_instant ∨ background
-  | target_creates_edges → ident_joins | no_target → root_entry | both_optional
-  | post_mutation_after_merge | or_post_action(lambda) | or_fallback_on_error
-  | parallel_false (default) → batching_on_remote | parallel_true → immediate ∧ unbatched
-  
-λ decision_mutation_path.
-  need_state_change ∧ controlled_semantics → use(transact!)
-  | transact! ← local_only ∨ local_then_remote ∨ optimistic ∨ error_recovery
-  | mutation_uses_eql → join_query_in_mutation | remote_clause | result_action
-  | default_result_action ← error_handling ∧ tempid_rewrite ∧ merge_mutation_return
-  | tempids_resolved_automatically | server_returns_new_ids | client_remaps_all_references
-  | ¬mutations_and_loads_simultaneously ← separate_flows | both_in_same_tx → serialized
-  
-λ decision_render_trigger.
-  state_change → schedule_render! → next_animation_frame
-  | force_root? ← expensive | only_when_necessary | shared_fn_recalc ← root_props_changed
-  | optimized_render! ← keyframe_renderer (default) | custom_via_component_options
-  | render_middleware ← wrap_every_component_render | measure ∨ augment ∨ trace
-  | basis_t ← version_number | ticks_forward | props_with_newer_basis_t_win
-  
-λ decision_ui_state_isolation.
-  ui_namespace(::ui/*) ⊗ data_namespace(other) ≡ separate
-  | ui_state → local_only | never_sent_to_server | filtered_by_global_eql_transform
-  | data_namespace → persisted | normalized | joined | targetable
-  | never_nest_ui_data_inside_persisted_entities ← break_updates_later
-  | form_state ← special_table | ::form/config | provides_dirty_checking ∧ accumulation_layer
-  
-λ mechanism_stale_props_prevention.
-  every_denormalize ← mark_time | denormalize_time ∧ basis_t_in_props_metadata
-  | when_parent_passes_child_props ← parent_newer ∧ child_older → use_parent_tunnel
-  | props_tunneling ← targeted_update_sends_direct_to_component | skips_parent_render
-  | newer_props(a, b) → compare_denormalize_time → winner_takes_slots
-  | render_optimization ← keys(props) > 1 → targeted_updates ∧ avoid_root_render
-  
-λ mechanism_merge_mark_sweep.
-  load_or_mutation_returns_data → mark_missing(response, query)
-  | mark_missing ← walk_query | if_key_requested_but_absent → ::not-found_marker
-  | sweep ← second_pass | remove_::not-found_markers ∧ orphaned_data_disappears
-  | stale_data ← skip(mark_missing) → old_data_persists_wrongly | dangerous
-  | mark_sweep_required ← required_invariant | normalizes_state_transitions
-  
-λ mechanism_pre_merge_transformation.
-  after_normalize ∧ before_merge → pre_merge_can_run
-  | pre_merge(entity_data) → transformed_entity | add_defaults ∨ fix_shape ∨ validate
-  | pre_merge_runs_on_each_entity_in_response | recursive | per_component_class
-  | pre_merge_vs_post_mutation → pre_merge_is_structural | post_mutation_is_behavioral
-  | pre_merge_sees_incomplete_data ← query_may_be_subset | may_have_not_found_markers
-  
-λ mechanism_transact_flow.
-  transact!(component, mutation_list, options) → submit_to_queue
-  | queue_processing → serialize_mutations | build_ast → dispatch_remote_and_local
-  | local_mutation_always_runs ← immediate_state_change | optimistic_or_pessimistic
-  | remote_only_if_has_remote_clause | ::m/remote ← (fn [ast-or-env] query-ast)
-  | result_action ← runs_always | receives_app_state ∧ result ∧ ast ∧ env
-  
-λ mechanism_targeted_updates.
-  load_with_target → ident_path_vectors | create_edges_in_state
-  | target ≡ where_to_place_ident_after_load | three_element_vectors
-  | three_vectors → [table_name id_value new_key] | special_targets(multiple, append, prepend, replace)
-  | target_without_normalize → data_at_path | not_entry_in_table | keep_raw
-  | targeting_vs_join → targeting_creates_pointers | joins_include_whole_subtrees
+λ component_organization(class).
+  defsc ≡ component_definition | must_declare: query | ident | render | initial-state
+  | has_query ∧ has_ident → composable | ¬has_ident → no_joins_possible → leaf_only
+  | composition_vector: nested_components → automatic_query_composition → parent_includes_children
+  | alternative: factory ≡ render_wrapper | no_query | for_dynamic_children_or_mutations
+  | preference: defsc > direct_factory_calls | declarative > procedural
 
-λ prevents_circular_denormalization.
-  recursive_queries ⊗ recursion_limits ≡ prevent_loops
-  | depth_based_recursion(3) → denormalize_3_levels_only | stops_at_depth
-  | unbounded_recursion(...) → track_seen_idents | stop_on_repeat ← prevent_infinite_loop
-  | loop_detected_warning ← logged | partial_data_returned
+λ state_shape(normalization).
+  input ≡ tree_from_server | {user {name ... posts [{...}]}}
+  | normalize(tree, query) → table_per_type | {user {1 {name ...}} post {1 {...}}}
+  | denormalize(db, query) → reconstruct_tree | props_shaped_by_query_not_db_shape
+  | ¬nested_tree_storage → denormalize_cannot_traverse → circular_refs_dangerous → stale_data_likely
+  | benefit: reusability | cost: extra_lookup_step | tradeoff: worth_it
+
+λ ident_sufficiency(query).
+  query ∧ ident ≡ sufficient_for_navigation | ¬query_alone | ¬ident_alone
+  | ident ≡ where | query ≡ what
+  | denormalize([:user/id 1], [user/id name email posts]) → follow_ident_to_table → apply_query → tree
+  | if_ident_missing → getvalue_returns_nil → denormalize_returns_nil_props
+  | if_query_missing → denormalize_has_nothing_to_select → returns_all_entity_keys
+  | join_mismatch: parent_query_lacks_join → child_query_fetched_from_nil_entity → empty_render
+
+λ tempid_remapping(mutation_result).
+  mutation_creates_entity → transact_returns_tempid → [:table "new-1"]
+  | server_creates_real_id → response_body_contains_tempid_mapping → tempid→realid
+  | rewrite_tempids! ≡ swap_all_references | both_ident_and_data | synchronously_after_receive
+  | skip(rewrite) → dangling_tempids → child_components_orphaned → render_failures
+  | benefit: optimistic_ui | cost: cleanup_complexity
+
+λ merge_strategy(server_response).
+  merge! ≡ integrate_server_tree_into_db | normalized_automatically | targeted_via_targeting
+  | mark-missing ≡ sweep_algorithm | removes_absent_fields | prevents_stale_cache_hits
+  | pre-merge ≡ transform_before_normalize | custom_shape_alignment | component_optional
+  | post-merge ≡ post_processor | indexing_trigger | rare
+  | order: normalize → mark_missing → target → swap_state → indexes_rebuild
+  | skip(mark-missing) → phantom_data → stale_queries_return_cached_shape → false_positives
+
+λ load_marker_necessity(load).
+  load! ≡ async_on_network_remote | no_marker_needed | immediate_queue
+  | load!(marker=true) → ui_reflects_loading_state | status_field_on_entity | queryable
+  | marker ≡ {status :loading | :ready | :failed} | at marker-table path
+  | skip(marker) → no_ui_feedback → user_doesn't_know_loading → poor_ux
+  | benefit: visual_feedback | cost: query_overhead_minimal
+
+λ transaction_ordering(tx).
+  mutations_queued_in_order | executed_per_queue_policy | writes_before_reads_preference
+  | local_phase_always_synchronous → immediate_render | remote_phase_async_per_remote
+  | parallel? ≡ option | default: sequential_per_transaction_id
+  | skip(ordering) → concurrent_mutations_race → state_corruption → rollback_impossible
+
+λ dispatch_key_semantics(mutation_result).
+  mutation_declares_returning | :returning ≡ subquery_of_result | keys_to_extract_from_response
+  | dispatch_key ≡ matched_element_in_returning | used_for_error_action | ok_action | signal_mutation_complete
+  | no_dispatch_key → result_not_available_to_actions → ¬can_verify_ok_vs_error
+  | benefit: structured_result_handling | cost: must_match_server_shape
+
+λ remote_choice(transaction).
+  remote ≡ {fn_returns_handler_or_callbacks} | sent_as_ast | asynchronous | optional
+  | default_remote ≡ :remote | others_by_name | multiple_remotes_supported
+  | handler_receives: {:ast ... :result {:body ...}} | async | MUST_call_callback
+  | skip(remote) → no_server_interaction → no_data_integration → local_mutation_only
+  | benefit: flexible_transport | cost: handler_responsibility
+
+λ pre_merge_purpose(component).
+  pre-merge ≡ hook_before_normalize | shapes_server_response_tree | optional
+  | called_once_per_merge | not_per_component | receives_entire_response_tree_chunk
+  | may_transform_shape | may_validate | may_reject | return_new_shape
+  | skip(pre-merge) → server_shape_must_match_query_exactly → integration_failures_likely
+  | trap: pre_merge_called_ONCE_not_per_entity | easy_to_forget_recursion
+
+λ indexing_automation(app).
+  indexes_maintained_automatically | by_ident | by_component_class
+  | indexing ≡ [ident→component-instance] ∧ [component-class→all-instances]
+  | lookup_index ≡ fast_component_discovery | refocus_for_state_change | test_inspection
+  | skip(reindexing) → stale_indexes → cannot_find_instances → targeted_mutations_fail
+  | reindexing_triggered_by: denormalize ∧ component_mount ∧ ident_change
+  | trap: indexes_lag_one_transaction | visible_in_inspection_not_fresh_logic
+
+λ form_state_duality(entity_ident).
+  form_state ≡ parallel_config_track | {::fs/pristine {old_values} ::fs/complete? #{touched_fields}}
+  | ¬nested_in_entity | tracks_form_meta_separately | necessary_for_dirty_detection
+  | dirty_field(x) ≡ (current[x] ≠ pristine[x]) ∧ touched[x]
+  | skip(tracking) → cannot_detect_changes → cannot_show_dirty_indicator → cannot_validate
+  | benefit: precise_validation | cost: dual_maintenance_required
+
+λ asm_stateful_coordination(asm_id).
+  asm ≡ active_state_machine_instance | local_storage | actor→ident_map
+  | per_instance_state | triggered_via_events | transitions_deterministic
+  | queue_model: events_buffered | processed_sequentially | side_effects_via_actions
+  | skip(asm) → stateful_component_groups_become_imperative → maintenance_nightmare
+  | benefit: declarative_orchestration | cost: learning_curve
 ```
 
-## S3 — Temporal Rules (What Must Happen in Order)
+## S3 — Temporal Rules (what must happen in order)
 
 ```
-λ sequence_app_initialization.
-  1_create_app: fulcro_app(options) | returns_uninitialized
-  2_set_root: optional_in_creation | or_set_via_mount!
-  3_initialize_state: init_state! ∨ mount!_initializes | pulls_from_root_query
-  4_mount_dom: mount!(app root-element) | render_to_dom | client_did_mount callback
-  | skip(1) ∨ skip(2) ∨ skip(3) → never_renders ∨ renders_empty
-  | skip(4) → react_lifecycle_incomplete | cannot_use_component_refs
+λ startup(app).
+  1. create_app ≡ {:initial-state {...} :root-class Root :remotes {...}}
+  2. create_root_component ≡ defsc with query+ident+render
+  3. mount ≡ dom-mount ∧ app-start! on browser or headless-app for JVM
+  4. mount_initializes: indexes | root-factory | root-class | state-atom | runtime-atom
+  5. first_render ≡ query_root → denormalize_root_props → render_root_factory → mount_tree
+  | skip(2) → cannot_navigate → no_queries → render_receives_nil_props
+  | skip(5) → mounted_but_nothing_renders → user_sees_blank_screen
 
-λ sequence_load_workflow.
-  1_declare_component: defsc_item | has_query ∧ has_ident ∧ optional_pre_merge
-  2_emit_load: load!(app :items Item {:marker true}) | submits_mutation
-  3_remote_transmit: network_driver → sends_query_to_server
-  4_normalize_response: tree→db(response_tree) → normalized | metadata_holds_tables
-  5_merge_with_mark_sweep: mark_missing ∧ sweep ← remove_orphans ∧ update_edges
-  6_post_mutation: if_defined → runs_after_merge → can_further_modify_state
-  7_post_action: if_defined → runs_after_post_mutation
-  8_render_trigger: schedule_render! → next_frame → component_sees_new_props
-  | skip(1) → load_fails_at_normalization ← no_shape
-  | skip(2) → no_network_request
-  | skip(3) → server_error_or_not_implemented
-  | skip(4) → raw_tree_in_state ← stale_later
-  | skip(5) → orphaned_data_or_old_data_persists
-  | skip(6,7) → no_side_effects_post_load
-  | skip(8) → component_never_sees_data
+λ transaction_flow(txid).
+  1. user_initiates ≡ transact!([mutation-expr]) or transact!!
+  2. queue_transaction ≡ add_to_send_queue | local+remote_ast_nodes
+  3. local_phase ≡ apply_mutation → swap!_state → triggers_render
+  4. render_phase ≡ query_root → denormalize → factory → render_tree → paint
+  5. remote_queue ≡ parallel_or_sequential_per_options | per_remote_handler
+  6. network_phase ≡ handler_processes_ast | sends_request | awaits_response
+  7. receipt_phase ≡ normalize_response → mark_missing → merge → indexes_update
+  8. post_merge ≡ success_action or error_action | may_trigger_more_tx
+  | skip(2) → tx_lost → no_side_effect
+  | skip(3) → server_acts_but_ui_unchanged → user_sees_nothing
+  | skip(5) → local_ok_but_server_unaware → stale_backend
+  | skip(7) → response_arrives_but_not_integrated → ui_doesn't_update
 
-λ sequence_mutation_workflow.
-  1_define_mutation: defmutation name [params] | action ∧ remote ∧ result_action
-  2_submit_tx: transact!(component, [mutation-name {}]) | creates_transaction
-  3_local_action: action_fn_runs → immediate_state_change
-  4_remote_submit: remote_clause → builds_ast → network_layer_transmits
-  5_await_response: server_returns_result | timeout_or_error_possible
-  6_result_action: receives_result ∧ ast ∧ app | integration_point | handle_tempids
-  7_render_trigger: schedule_render! → affects_props → components_rerender
-  | skip(1) → no_dispatch → error_or_nothing
-  | skip(2) → never_submitted
-  | skip(3) → no_optimistic_update | must_wait_for_server
-  | skip(4) → local_only_mutation
-  | skip(5) → default_error_handling | or_custom_error_action
-  | skip(6) → no_error_recovery ∨ no_tempid_mapping
-  | skip(7) → render_never_happens ← schedule_render! missing
+λ data_loading(remote_key).
+  1. load! ≡ mutation_like_operation | queued_with_tx | marked_as_load_via_ast
+  2. query_building ≡ if_class_provided → get-query_from_class | if_field_only → [field]
+  3. local_execution ≡ if_marker → set_status_:loading | optional | immediate
+  4. remote_dispatch ≡ ast_sent_via_remote | handler_receives_it | implementation_dependent
+  5. response_receipt ≡ integration_automatic | normalize_per_query | mark_missing
+  6. targeting ≡ join_missing_ident_to_parent | place_in_right_location_in_db
+  7. render_refresh ≡ denormalize_fires → new_props → components_rerender
+  | skip(3) → no_loading_indicator → user_doesn't_know_status
+  | skip(5) → orphan_response_in_db → unreachable_from_root → never_renders
+  | skip(6) → normalized_data_sits_in_wrong_table → cannot_be_joined_to_parent
+  | trap: load!_in_render → anti_pattern | triggers_tx_mid_render → warning_logs
 
-λ sequence_normalized_state_transition.
-  1_tree_arrives: server ∨ constructor | shape_is_nested
-  2_normalize: tree→db(tree, component_query) → ident_links ∧ tables
-  3_pre_merge: per_entity → transform ∨ validate ∨ default | runs_on_normalized_tree
-  4_merge_base: merge_into_state(normalized_tree) | replaces_entire_trees
-  5_mark_missing: walk_query_of_response | mark_absent_as_::not-found
-  6_sweep: remove_::not-found_markers | orphaned_leaves_disappear
-  7_denormalize: db→tree(query, new_state) → props_tree | time_metadata_attached
-  8_render: component_sees_props | equality_check → shouldComponentUpdate → maybe_render
-  | skip(2) → nested_trees_persist ← bugs_later
-  | skip(3) → no_defaults_or_validation
-  | skip(4) → merge_wrong_place_or_not_at_all
-  | skip(5) → stale_data_remains ← silent_bug
-  | skip(6) → orphaned_entities_in_db ← memory_leak
-  | skip(7) → props_dont_exist ← undefined_in_render
-  | skip(8) → component_never_renders
+λ component_lifecycle(instance).
+  1. class_definition ≡ defsc with query+ident
+  2. factory_call ≡ component-factory(props) → React.createElement
+  3. React_mount ≡ constructor → render_called → componentDidMount_if_class
+  4. denormalize ≡ before_factory_called | props_retrieved_via_query_from_db
+  5. hooks_init ≡ hooks/useState called | hook_state_persisted_per_path | instance_mounted?
+  6. user_event ≡ onClick etc | may_transact! | may_call_set-state!
+  7. state_swap ≡ mutation_applied | indexes_updated | component_pinned_or_refreshed
+  8. render_phase ≡ query_root_fresh | denormalize_anew | factory_called_anew
+  9. React_update ≡ props_differ? → rerender | hook_state_persists
+  10. unmount ≡ cleanup_hooks | drop_from_indexes | free_references
+  | skip(4) → props_nil → rendering_without_data → errors
+  | skip(5) → hooks_lost_on_rerender → state_corruption
+  | trap: render_calls_transact! → infinite_loop | queued_but_not_executed_mid_render
 
-λ sequence_render_causality.
-  state_changes → set_basis_t_tick ← timestamp | all_denormalize_calls_use_new_tick
-  | render_scheduled → next_animation_frame ← batches_updates | smooth_60fps
-  | before_render_callback → optional_state_tweaks | called_once_per_render
-  | core_render → binding_dynamic_vars(*app*, *shared*) | calls_optimized_render!
-  | optimized_render! → analyze_changes → refresh_specific_subtrees ∨ force_root
-  | render_middleware → wraps_component_renders | per_component_hook
-  | render_root! → React_invocation | actually_paints_DOM
-  | render_complete → basis_t_snapshot_in_indexes | ready_for_next_render
-  | skip_schedule → changes_dont_render ← async_issue ∨ timing_bug
+λ mutation_action_sequencing(env).
+  action_sequence ≡ action_name → action_fn receives env
+  | action ≡ fn(env) → modifies env | may_modify_state | returns env or modified
+  | built_in: remote_ok_action | remote_error_action | post_mutation | post_action
+  | custom ≡ :ok-action | :error-action | :post-action defined_on_mutation
+  1. mutation_declared_in_tx → :action called_if_local ¬ synchronous
+  2. remote_sent_if_has_remote → awaits_network
+  3. response_integrated → indexes_updated
+  4. :ok-action called_if_remote_ok | :error-action called_if_remote_error
+  5. :post-action called_after_actions_regardless
+  6. may_trigger_more_mutations | may_update_state
+  | skip(1) → logic_skipped → no_ui_change
+  | skip(4) → error_unhandled → no_user_feedback
 
-λ constraint_transaction_serialization.
-  mutations → single_queue | submitted_in_order
-  | queue_preserves_order | not_parallel ← concurrent_mutations_cause_race_conditions
-  | load! ∧ mutation_in_same_tx → both_submitted | load_runs_first ∨ after_mutation
-  | parallel_flag_true → bypasses_queue | immediate_network_submit | use_carefully
-  | ¬(load! ∨ transact!) → no_changes_to_state ← app_frozen
+λ targeted_merge_sequence(response, target).
+  1. normalize(response, query) → {tables}
+  2. mark_missing(db, query) → phantom_sweeper | removes_absent_keys
+  3. if_target_provided → create_missing_edge | parent→ [ident]
+  4. merge_into_db ≡ (update-in db tables)
+  5. update_indexes ≡ reindex_on_ident | reindex_on_class
+  6. denormalize_fresh ≡ queries_re_executed | new_props_computed
+  7. render_triggered
+  | skip(2) → stale_data_in_cache → false_positives_in_queries
+  | skip(3) → orphan_data | unreachable_from_root | never_renders
 
-λ constraint_ident_path_consistency.
-  when_targeting_after_load → path_shape ≡ [table id field] ∨ special_target
-  | denormalize_then_target → ident_exists_in_state ∨ target_creates_it ← pre_merge_issue
-  | target_without_entity → crashes ∨ silently_ignores ← depends_on_targeting_algorithm
-  | targeting_before_normalize → wrong_data_merged ← pre_merge_shape_mismatch
+λ load_marker_lifecycle(entity_ident, marker).
+  1. load!(marker=true) → set_load_marker! at marker-table
+  2. status ≡ :loading | query_for_[df/marker-table '_] includes marker
+  3. response_received → finish_load! | status → :ready
+  4. optionally_trigger_post_mutation | or_post_action
+  | query_must_include: [df/marker-table '_] → automatic_rerender_on_status_change
+  | if_query_lacks_marker → status_change_invisible → ui_never_shows_loading
+  | if_error → load_failed! → status_:failed | error_action_triggered
 ```
 
-## S2 — Coordination Rules (How Parts Interact)
+## S2 — Coordination Rules (how parts must interact)
 
 ```
-λ contract_query_denormalization.
-  query_ast → denormalize_ast ∧ state_map → props_shape_follows_query_shape
-  | query_element_type ∧ state_element_type ≡ covariant | both_inform_each_other
-  | link_ref [:table '_] → entire_table ← all_entries | state_root_table
-  | lookup_ref [:table id] → single_entity ← ident | normalized_entry
-  | join {key subquery} → follow_ident ∨ get_value | apply_subquery_recursively
-  | recursive_join ← depth_based(3) ∨ unbounded(...) | loops_prevented ∧ depth_tracked
-  | union {type1 q1 type2 q2} → single_ident_selects_subquery | props_match_union_type
-  | missing_in_state ← marked_::not-found ∨ returns_empty_map ← graceful_degradation
-  
-λ contract_normalize_merge.
-  tree_with_component_context → tree→db(tree, query, component_class, transform)
-  | component_class ← provides_ident_function ∧ optional_pre_merge
-  | transform ← optional_pre_normalize_processor | normalizes_before_tables_created
-  | result ≡ {root_props_tree} + metadata(tables) | or_merged_ident_maps
-  | ident ← extract_from_entity | [table id] ← component.ident(this, props)
-  | ¬ident ∨ ident_nil ← skips_normalization | entity_stays_nested ← bug_source
-  | recursive_normalize ← walks_joins | each_component_normalized_separately
-  | tables_contain_deduplicated_entities | ident_links_in_tree_point_to_tables
-  
-λ contract_load_response_handling.
-  response_body ∧ response_query_ast ∧ load_params → finish_load!(env, params)
-  | mark_missing_impl(body, query_walked) → response_tree_with_not_found_markers
-  | sweep_impl(marked_tree) → orphaned_data_removed ← missing_leaves_gone
-  | merge_into_state(swept_tree) → swap_state_atom ← now_consistent
-  | optional_target → targeting_process ← moves_idents | creates_new_edges
-  | optional_post_mutation ← queued_mutation | runs_within_same_transaction_scope
-  | optional_post_action ← lambda | receives_env(app, state, result, load_params)
-  | ¬ok_action ∧ ¬error_action → default_flow | error_action_overrides_all
-  
-λ contract_mutation_result_integration.
-  result_body ∧ mutation_ast ∧ dispatch_map → default_result_action!(env)
-  | update_errors_on_ui_component! ← error_detection_and_storage ← ::mutation-error_key
-  | rewrite_tempids! ← server_returns_id_map | client_remaps_all_occurrences
-  | integrate_mutation_return_value! ← merge_joins | keeps_tempid_references
-  | trigger_global_error_action! ← if_remote_error? → run_global_handler
-  | dispatch_ok_error_actions! ← run_ok_action ∨ error_action_from_dispatch_map
-  | ¬override ← uses_default | ¬dangerous_for_novices
-  
-λ contract_props_tunneling.
-  targeted_update ← component_with_ident | parent_doesn't_render
-  | new_props_placed_in_state ← ident_link_updated | denormalize_creates_new_props
-  | props_tunneled_directly → component_local_state | skips_parent_path
-  | denormalize_time_meta ← newer_props(a, b) ← compare_times | winner_delivers_props
-  | shouldComponentUpdate → uses_props_version_check ← basis_t_comparison
-  | render_optimization ← avoid_parent_render_cost | targeted_updates_scale_well
-  
-λ contract_ui_state_separation.
-  ::ui/* → never_sent_to_server | global_eql_transform_filters_out
-  | ui_query_fragments ← removed_before_remote ← static_transform_time
-  | data_namespace → persisted ∧ normalized ∧ targetable ∧ indexed
-  | form_state_table ← special_case | ::form/id → dirty_checking ∧ nested_form_support
-  | ui_props_computed_at_render → shared_fn ∨ custom_mutations | dynamic_calculations
-  
-λ contract_pre_merge_visibility.
-  pre_merge(entity_data) → receives_normalized_tree | not_yet_in_state
-  | ∀entity_in_response → pre_merge_called | recursive | once_per_entity
-  | data_may_be_incomplete ← query_subset ← requested_subset_only
-  | ::not-found_markers ← present_in_tree | indicates_missing_fields ← pre_merge_can_detect
-  | pre_merge_return ← mutated_entity | defaults_added ∨ shape_fixed ∨ validation_error
-  | after_pre_merge ← merge_happens | mark_missing_runs | sweep_runs ← final_consistency
+λ query_ident_contract(component_class).
+  query_shape ≡ EQL_string | `[field-list-including-joins]`
+  ident_shape ≡ [keyword id-value] | unique_per_entity | stable_across_time
+  ¬query ∨ ¬ident → degenerate_component | ¬joinable | must_be_leaf
+  join_expression ≡ {key [subquery]} | key_locates_ident_in_parent_props | subquery_from_ident
+  | vocab: keyword ≡ database_table_alias | [keyword value] ≡ row_address | [query] ≡ field_list
+  | constraint: ∀component_used_in_join → has_query ∧ has_ident
+  | constraint: ∀join_key → must_be_in_parent_props | computed_from_props | not_fabricated
 
-λ vocab_transaction_options.
-  ::txn/options ← passed_to_load! ∨ transact! | configure_processing_behavior
-  | ::txn/refresh ← [idents_or_keywords] | hint_to_renderer ← skip_subtrees ∨ refresh_only_these
-  | ::txn/parallel? ← boolean | bypass_queue ← immediate ∨ concurrent | use_carefully
-  | ::txn/abort-id ← unique_id | abort! can_cancel | not_yet_queued ∧ not_networking
-  | load_marker ← custom_id ∨ false ← no_tracking | progress_visible ← required_in_query
+λ denormalize_algorithm(db, query, entity_ident).
+  input ≡ (db, [EQL_query], ident)
+  | ident ≡ lookup_ref | [table id]
+  | query ≡ property_list ∧ join_expressions
+  process ≡ walk_query | follow_ident_joins | extract_properties_per_component
+  output ≡ tree_of_denormalized_props | ¬ident_references | direct_values
+  join_semantics ≡ {key [query]} → lookup_ident_in_props[key] → recursively_denormalize_ident_via_query
+  ¬ident_in_props[key] → join_returns_nil | component_renders_with_nil_join
+  depth_limiting ≡ {...} ≡ infinity | 5 ≡ 5_levels | cycles_tracked_per_attribute
+  | vocab: lookup_ref ≡ [table id] | link_ref ≡ [table '_] | denormalized_value ≡ scalar_or_tree
+  | constraint: query_must_match_component_shape | mismatches_leave_gaps | render_errors_possible
+  | constraint: ident_must_exist_in_db_or_join_returns_nil
 
-λ vocab_component_lifecycle.
-  client_will_mount ← callback | app_fully_initialized | before_mount_to_dom
-  | client_did_mount ← callback | after_first_render | use_for_post_render_tasks
-  | component_did_mount ← React_lifecycle | component_instance ← mounted_on_dom
-  | render ← must_be_pure | receives_props ∧ this_context | returns_react_elements
-  | should_component_update ← optimization | prop_and_state_equality | false_skips_render
-  | get_derived_state_from_props ← static_React_hook | rare | usually_use_pre_merge
+λ normalize_algorithm(tree, query, transform_fn?).
+  input ≡ (tree_from_server, EQL_query, optional_pre_processor)
+  | tree ≡ nested_structure | matches_query_shape | may_contain_lists
+  | query ≡ EQL_against_tree_shape | not_against_db_shape
+  process ≡ walk_query_on_tree | collect_entities_by_ident | extract_tables | deduplicate
+  output ≡ {tables} | {:table {id entity}} | :tempids included_if_present
+  join_handling ≡ {key [query]} in query → {key [ident-list]} in output | extract_subentities
+  list_handling ≡ [item-list] in tree → [{idents}] in output | only_idents_in_join
+  | vocab: table ≡ keyword | entity ≡ {props...} | ident ≡ [table id]
+  | constraint: query_drives_shape | tree_must_match_query_structure | mismatches_fail_or_warn
+  | constraint: all_entities_must_be_identifiable | no_ident → warning_logged
+
+λ merge_entry_point(db, response_tree, query, target?).
+  input ≡ (current_db, server_response, query_used_for_response, optional_target)
+  | normalize(response, query) → response_normalized ≡ {tables}
+  | mark_missing(response, query) → sweep_marks_absent_keys_for_removal
+  | if_target: create_missing_edges | parent_ident→ [child_idents] | in_target_location
+  | merge_tables: (update-in db table-key (merge entity))
+  | update_indexes: reindex_all_idents → reindex_all_classes
+  output ≡ new_db | ready_for_denormalize
+  | vocab: table_key ≡ [table] | target ≡ [parent-table parent-id parent-key] | missing_marker ≡ ::not-found
+  | constraint: target_must_create_valid_path | [a b] insufficient | [a b c] required_usually
+  | constraint: query_must_match_response_tree | normalize_fails_otherwise
+
+λ tempid_lifecycle(new_entity_ident).
+  creation_in_mutation ≡ tempid/tempid() → ["string-generated-id"] | local_only
+  | usually_via_initial-state | creates_entity_with_real_ident_shape
+  usage ≡ entity_added_to_state | used_in_queries | queries_fetch_tempid_entity
+  network_result ≡ server_generates_realid | includes_tempid_in_response | maps_tempid→realid
+  rewrite ≡ rewrite_tempids!(app, result) | swaps_all_references | ∀tempid→realid
+  | tempids_in_db | tempids_in_queries | tempids_in_nested_entities | tempids_in_idents
+  cleanup ≡ tempid_no_longer_referenced | garbage_collected_naturally
+  | vocab: tempid ≡ ["generated"] | realid ≡ integer_from_db | remapping ≡ {tempid realid}
+  | constraint: rewrite_must_be_exhaustive | remaining_tempids→stale_ui
+  | constraint: rewrite_before_denormalize_next_render | or_orphaned_data
+
+λ remote_handler_protocol(ast).
+  handler_receives ≡ {:ast ... :result-handler callback :error-handler callback :app app}
+  | ast ≡ EQL_query_ast | may_be_mutation | may_be_query | dispatch_key_for_result
+  | must_call ≡ callback or error-handler | with {:status ... :body ...} or exception
+  | transport_agnostic | handler_implements_actual_network_io | sync_or_async_ok
+  | return_value_ignored | callback_required | error_callback_optional
+  | vocab: :status ≡ http_status_or_transport_status | :body ≡ response_edn_or_json_parsed
+  | constraint: handler_must_call_callback | or_transaction_never_completes | memory_leak
+
+λ loading_state_visibility(component_query).
+  visible_if: query_includes [df/marker-table '_] | link_query_to_all_marker_data
+  | includes: status field | :loading | :ready | :failed
+  | re_renders_when: status_changes | denormalize_detects_new_status | new_props_delivered
+  | invisible_if: query_lacks_marker | status_updates_ignored | old_props_cached
+  | vocab: marker-table ≡ :ui.fulcro.client.data-fetch.load-markers/by-id | status ≡ keyword
+  | constraint: query_must_include_marker_to_refresh_on_status_change
+
+λ ui_state_machine_vocabulary(asm_id).
+  state ≡ {handler ∨ events_map} | async_handler_per_state | events_define_transitions
+  event ≡ {target_state | handler | event_predicate} | triggered_via_trigger!
+  actor ≡ {component_name_by_actor_name} | maps_to_component_classes
+  action ≡ (fn [env] ...) | receives_asm_env | may_modify_asm_state | may_load_or_transact
+  | vocab: asm_id ≡ local_storage_key | state_map ≡ per_instance_state | actor_name ≡ keyword
+  | constraint: actors_must_exist_at_asm_init | unknown_actor→error
+  | constraint: target_state_must_exist | transition_to_nil→error
 ```
 
-## S1 — Architectural Rules (Expert Patterns)
+## S1 — Architectural Rules (expert patterns)
 
 ```
-λ pattern_component_definition.
-  defsc MyComponent [this props]
-    {:query       (fn [] [:id :name {:child (comp/get-query ChildComponent)}])
-     :ident       (fn [_ {:keys [id]}] [:table/id id])
-     :initial-state (fn [params] {:id 1 :name "default" :child {...}})
-     :pre-merge   (fn [data] (assoc data :computed-field (...)))}
-    (dom/div "Name: " (:name props)))
-  
-  | defsc ≡ class + factory_function | auto-quotes_mutations
-  | :query ← dynamic ← (fn [this]) ∨ static ← returns_ast | Necessary
-  | :ident ← (fn [this props]) → [:table/id value] | Necessary_for_normalization
-  | :initial-state ← used_by_init_state! ← deep_merge | nested_children_compose
-  | :pre-merge ← (fn [data]) → modified_data | optional | structural_transforms_only
-  | children ← (comp/children this) | indexed_from_props | force_into_vectors
-  | ¬mutation_body_in_defsc ← defmutation_separate | cleaner_testing ∧ composition
-  
-λ pattern_composition_query.
-  (defsc Item [this {:keys [id name]} computed]
-     {:query [:id :name {::ui/selected false}]
-      :ident [:item/id :id]})
-  
-  (defsc ItemList [this {:keys [items]}]
-     {:query [{:items (comp/get-query Item)}]
-      :ident [:list/main]})
-  
-  | parent_query ← {subkey (comp/get-query ChildClass)} ← composition ← runtime
-  | ∀join_in_query → corresponding_entity_must_have_ident
-  | query_static_best | but_dynamic_when_conditional | denormalize_entire_query_each_render
-  | ¬skip_query_elements ← props_undefined ← render_errors | must_match_exactly
-  
-λ pattern_loading_and_targeting.
-  (comp/load! this :all-items ItemList
-    {:marker true
-     :target [:ui/items-list '_]
-     :post-mutation `post-load-mutation
-     :post-mutation-params {:filtered true}})
-  
-  | load_key ← :all-items ∨ [:item/id 123] ← ident ← differs_by_case
-  | component_class ← ItemList ← query_and_ident ← shape ← normalization
-  | :target ← [[:ui/items-list '_]] ← link_ref | creates_edge_from_table | append_idents
-  | :marker ← true ∨ symbol ← custom_id | query_for_marker_in_component | track_status
-  | :post-mutation ← symbol ← queued_after_merge | further_transform ← optional
-  | ¬:target_with_ident_load ← ident_load_ignores_target | direct_table_entry ← semantic
-  
-λ pattern_mutation_with_joins.
-  (defmutation create-item [params]
-    {:action (fn [env]
-       (let [{:keys [state]} env]
-         (swap! state assoc-in [:ui/new-item-form] {})))
-     :remote (fn [env]
-       (eql/query->ast `[(create-item ~params
-                         {:id :name :created-at})]))
-     :result-action default-result-action!})
-  
-  | :action ← immediate_state_update ← optimistic ∨ local_only
-  | :remote ← optional ← builds_network_query | or_vector_of_queries
-  | join_in_remote_query ← response_normalized ← tables_created ← pre_merge
-  | :result-action ← receives_complete_env | can_integrate ∨ custom_logic
-  | tempids ← return_value_contains_tempid_mappings | server_returns_map | auto_rewrite
-  | ¬mutation_and_load_same_tx ← different_flows | serialize_if_together
-  
-λ pattern_error_recovery.
-  {:ok-action (fn [env] (handle-success env))
-   :error-action (fn [env] (let [{:keys [result]} env] (handle-error result)))}
-  
-  | ¬ok_action → uses_default ← merges ∧ post_mutation_runs ← standard_flow
-  | :error-action ← overrides_default ← must_handle_all_aspects ← fallback_OR_custom
-  | :fallback ← symbol ← queued_mutation | handles_specific_errors | partial_recovery
-  | global_error_action ← config_option ← runs_on_all_errors ← centralized_logging
-  | remote_error? ← (fn [result]) ← configurable ← status_code_or_custom_check
-  
-λ pattern_pre_merge_transformation.
-  {:pre-merge (fn [{:keys [id name created-at]}]
-                (assoc this :created-at-local
-                  (-> created-at inst-ms js/Date.)))}
-  
-  | pre_merge_on_load ← auto_runs ← before_merge ← per_entity
-  | data_shape_fixes ← add_defaults ∨ parse_strings ∨ compute_values ← structural
-  | ¬side_effects_in_pre_merge ← state_changes_forbidden | query_server_forbidden
-  | pre_merge_return ← mutated_entity ← assoc ∨ dissoc ∨ transform_keys
-  | pre_merge_on_initial_state ← also_happens ← same_function_signature ← DRY
-  
-λ pattern_form_state_table.
-  (fsm/add-form-config DropdownConfig Item ::add-item-form
-    {:id :string :name :string :type #{:a :b :c}})
-  
-  (comp/load! this [:item/id 1] Item
-    {:post-mutation `fsm/populate-form
-     :post-mutation-params {:form-key ::edit-item-form}})
-  
-  | form_state_table ← ::form/id → special_namespace ← not_sent_to_server
-  | dirty_tracking ← accumulation_layer ← deltas_vs_baseline ← unified_diff
-  | nested_forms ← supported ← arbitrary_depth ← composed_forms ← query_structure
-  | populate_form ← mutation ← copy_entity_into_form | baseline ← form_state_structure
-  | submit_form ← extract_valid_delta | ¬raw_form_data | structural_validation_first
-  
-λ pattern_render_optimization.
-  {:optimized-render! my-renderer
-   :before-render (fn [app])
-   :render-middleware (fn [this real-render])
-   :refresh [[:item/id 1] [:item/id 2] :search-results]}
-  
-  | render_middleware ← wraps_every_component | measure ∨ log ∨ augment ← per_render_hook
-  | refresh_in_transaction ← hint_to_renderer | keyed_render ← targeted_updates ← fast
-  | before_render ← called_once_per_render ← update_app_state | before_core_render
-  | force_root? ← expensive ← forces_all_renders ← disable_optimizations ← use_rarely
-  | keyframe_renderer ← default ← uses_query_positions ← efficient | ¬default_wrong
-  
-λ pattern_shared_props.
-  {:shared {:current-user {:id 1 :name "Alice"}}
-   :shared-fn (fn [root-props]
-                {:user-preferences (:preferences root-props)})}
-  
-  | shared ← static ← immutable_across_renders ← accessed_via_comp/shared
-  | shared_fn ← dynamic ← recalculated_on_root_forced_render ← optional_augmentation
-  | ¬shared_updates_on_every_render ← expensive ← explicit_app/update-shared! ← force_recalc
-  | accessed_via (comp/shared this) ∨ (comp/shared this [:key :path]) ← dynamic_binding
-  | shared_in_context ← React_alternative ← prefer_context_for_new_code
-  
-λ pattern_server_integration.
-  {:remotes {:default (http-remote/make-http-remote {:url "/api/graphql"})
-             :file-server (http-remote/make-http-remote {:url "/files/upload"})}}
-  
-  (comp/load! this :server-data SomeComponent
-    {:remote :file-server})
-  
-  | remote_name ← keyword ← :default ∨ custom ← in_load! ∧ transact!
-  | transmit! ← (fn [remote send-node]) ← implements_network_protocol ← async
-  | send_node ← {:query ast :remote_name :ok callback :error callback}
-  | ok_callback ← (fn [result]) ← merge ← or_custom ← ok_action ∨ default
-  | error_callback ← (fn [result]) ← handle_error ← error_action ∨ fallback ∨ global
-  | global_eql_transform ← filters ← ui/* ∧ com.fulcrologic.fulcro.* ← never_sent
-  
-λ anti_pattern_nested_normalization_boundaries.
-  | ¬defsc ← plain_maps | ¬ident ← no_normalization | bugs_later ← stale_mutations
-  | ¬query_on_leaf ← no_shape_contract | props_undefined ← render_errors
-  | nested_trees_in_root ← persist_directly | ¬normalize ← orphans_later ← gc_impossible
-  | ¬pre_merge ← raw_server_data | shape_mismatches ← render_crashes | silent_bugs
-  | mixing_normalized_and_raw ← some_normalized_some_not | inconsistent_updates
-  
-λ anti_pattern_query_mismatch.
-  | query_subset ∧ missing_query_keys ← undefined_in_props ← render_crash
-  | server_response_larger_than_query ← extra_data_stays ← orphan_risk
-  | :without ← removes_from_query ← be_careful_side_effects ← post_mutation_may_fail
-  | dynamic_query_depends_on_state ← state_not_yet_changed ← one_render_behind
-  | recursion_depth_wrong ← depth 3 ← cuts_off_data | depth … ← may_loop
-  
-λ anti_pattern_mutation_without_error_handling.
-  | ¬error_action ∧ ¬fallback ∧ ¬global_error_action ← silent_failure ← bad_ux
-  | ¬tempid_handling ← optimistic_tempids_remain ← wrong_data_persists ← bug
-  | ¬post_mutation ∧ need_side_effects ← incomplete_updates ← inconsistent_state
-  | transact! ← not_scheduled ← synchronous ∨ batched ← depends_on_configuration
-  
-λ anti_pattern_load_without_targeting.
-  | load! ← root_entry_only ← :target_missing ← flat_structure ← denormalization_not_used
-  | large_response → flattens_tree → hard_to_find ← must_use_targeting ← create_edges
-  | :post_mutation_missing ← no_structural_changes ← maybe_needs_target ∨ post_mutation
-  | parallel_loading ← bypasses_queue ← race_conditions_possible ← careful_ordering_needed
+λ defsc_pattern(ComponentName).
+  (defsc ComponentName [props computed]
+    {::app ∨ ::route-segment ∨ ::will-enter ∨ ::will-leave ;; options, not all required
+     :query [field-list {join-key [subquery]}]
+     :ident (fn [props] [table-id value])
+     :initial-state (fn [props] {initialized-state})
+     :pre-merge (fn [data] (transform-server-shape data))
+     :form-fields #{:field1 :field2}
+     :route-segment ["segment" :param]}
+    (html-or-dom-expression))
+  | all_query_joins → automatic_composition | no_manual_wiring
+  | ident → addressable | joinable | refreshable_by_ident
+  | initial-state → (fn [props] {...}) | receives_parent_props | returns_entity_shape
+  | constraint: query ∧ ident both required | ¬queries_without_idents
+  | constraint: initial-state shape matches query shape | mismatch→errors
+
+λ factory_usage(ComponentClass).
+  factory ≡ (factory ComponentClass) | creates_React_element_wrapper | no_query | stateless
+  | computed-factory ≡ (computed-factory ComponentClass) | adds_computed_props | ¬query_dependent
+  | use_case ≡ rendering_instances_in_map | rendering_lists | ¬parent_composition
+  | anti_pattern: factory_composition | prefer defsc composition | factories_for_rendering_only
+  | constraint: factory_cannot_compose_children | ¬joins | ¬queries
+
+λ transact_patterns(component_instance).
+  (transact! this [(mutation-expr)]) ≡ synchronous_queue | local_then_remote
+  | (transact!! this [(mutation-expr)]) ≡ alias_for_transact! | same_semantics
+  | (set-state! this {field value}) ≡ component_local_state | ¬_app_state | ¬shared | per_instance
+  | (set-value! this field value) ≡ sugar | via_mutation | intended_for_form_inputs
+  | anti_pattern: transact!_in_render | triggers_mid_render | queued_not_executed
+  | anti_pattern: mutation_without_local_action | server_updates_but_ui_unchanged
+  | constraint: ∀transact! must_be_in_event_handler | not_render | not_lifecycle_hook
+
+λ mutation_return_target_pattern(mutation).
+  (defmutation foo [params]
+    (action [env] (apply-logic env))
+    (remote [env] (true ∨ false ∨ ast-modification))
+    :returning ComponentClass ∨ [query]
+    :ok-action (fn [env] ...)
+    :error-action (fn [env] ...)
+    :post-action (fn [env] ...))
+  | :returning ≡ subset_of_response | used_by_ok/error_actions | optional_but_recommended
+  | :ok-action ≡ success_flow | receives_result | may_update_state | may_trigger_more
+  | :error-action ≡ failure_flow | receives_error | must_handle_or_silent
+  | :post-action ≡ cleanup_or_logging | called_regardless | not_for_state_changes
+  | constraint: remote_must_be_truthy | false ≡ local_only | true ≡ default_remote
+  | constraint: action_must_be_synchronous | no_async_in_action
+  | anti_pattern: action_without_returning | unknown_result_shape | actions_fail_silently
+
+λ data_targeting_rules(parent_ident, child_key, child_ident).
+  target ≡ [parent-table parent-id child-key] | creates_missing_edge | optional
+  | create_edge ≡ parent_props[child-key] = child_ident
+  | (df/load! ... :target [[:parent/id 1] :children])
+  | effect ≡ normalized_response_placed_at_target | join_created | reachable_from_root
+  | anti_pattern: 2-tuple_target | [table id] insufficient | orphans_data
+  | anti_pattern: target_nonexistent_parent | creates_orphan_ident | unreachable_from_root
+  | constraint: target_must_reference_existing_ident ∨ must_be_in_initial_state
+  | constraint: parent_key_must_be_in_parent_props | or_join_invisible
+
+λ ident_stability_pattern(entity_ident).
+  (fn [props] [:table (id props)]) ≡ stable_per_entity | ¬depends_on_state
+  | must_be_deterministic | same_props→same_ident_always
+  | must_not_change_after_creation | stale_idents_break_caches | stale_denormalizations
+  | tempid_creation ≡ [:table "temp-string-id"] | later_remapped_to_realid | deterministic
+  | anti_pattern: random_ident | (fn [_] [:table (random-uuid)]) | breaks_everything
+  | anti_pattern: state_dependent_ident | ident changes mid_lifecycle | orphans_all_references
+  | constraint: ident_must_be_independent_of_app_state | derivable_from_props_alone
+
+λ load_pattern(component_instance, load_key).
+  (load! instance load_key TargetClass {:params {...} :target [...] :marker true})
+  | load_key ≡ keyword ∨ ident | remote_property_or_entity | required_by_server_semantics
+  | TargetClass ≡ component_with_query | optional | if_absent_uses_load_key
+  | :target ≡ where_to_join | creates_missing_edge | usually_required
+  | :marker ≡ true | {status :loading | :ready} | queryable | ui_feedback
+  | :ok-action ≡ post_load_trigger | may_load_or_transact | may_transform_state
+  | :error-action ≡ handles_failure | may_retry | may_show_error_ui
+  | anti_pattern: load!_without_target | orphans_data | unreachable_from_root
+  | anti_pattern: load!_in_render | queued_but_async | renders_incomplete | errors_likely
+  | anti_pattern: load!_without_joining_parent | parallel_isolated_entity | seems_missing
+  | constraint: load_key_must_exist_on_server | or_network_error_guaranteed
+
+λ pre_merge_hygiene(component_class).
+  (defsc Foo [...] {:pre-merge (fn [data] (shape-data data))} ...)
+  | receives_entire_subtree | not_per_entity | called_once_per_merge
+  | may_transform_shape | validate_or_reject | return_new_shape_or_original
+  | executes_before_normalize | affects_how_response_integrated
+  | use_case: server_response_shape ≠ query_shape | must_align
+  | use_case: server_provides_extras | must_clean_up | prevent_phantom_data
+  | use_case: validation_logic | reject_bad_data | prevent_invalid_state
+  | anti_pattern: pre_merge_per_entity | wrap_recursive | hard_to_debug
+  | trap: pre_merge_calls_transact! | triggers_nested_transactions | complex_ordering
+  | constraint: must_be_pure | deterministic | no_side_effects
+
+λ form_state_pattern(entity_ident, form_fields_set).
+  (defsc EntityForm [props form-env]
+    {:form-fields #{:field1 :field2 :field3}}
+    ...)
+  | form-env ≡ {::fs/pristine {...} ::fs/complete? #{:field1}}
+  | dirty?(field) ≡ (current[field] ≠ pristine[field]) ∧ marked_complete?
+  | (fs/mark-complete! this field-key) ≡ user_touched | triggers_render
+  | (fs/pristine->entity! this) ≡ load_editing_entity | copy_to_current
+  | (fs/entity->pristine! this) ≡ save_entity | copy_to_pristine | reset_complete
+  | usage: validation_on_touch | dirty_indicators | save_button_state
+  | anti_pattern: form_state_nested_in_entity | track_parallel_not_nested
+  | constraint: form_state_must_be_at_same_ident | or_dirty_detection_fails
+  | constraint: form-fields must_include_all_edited_keys | missing→not_tracked
+
+λ headless_testing_pattern(RootClass, remotes_map).
+  (deftest my-test
+    (let [app (h/build-test-app {:root-class Root :remotes {:remote (lr/sync-remote handler)}})]
+      (comp/transact! app [(mutation-expr)])
+      (let [frame (h/last-frame app)]
+        (is (= expected-state (:tree frame))))))
+  | transact!_is_synchronous | renders_immediately | no_async | deterministic
+  | last-frame ≡ {tree hiccup-dom rendered element} | inspect_state_after_tx
+  | render-frame! ≡ capture_current_state | history | useful_for_debugging
+  | (hc/click! element-in-hiccup) ≡ event_simulation | triggers_event | hiccup_preserved_handlers
+  | loopback_remote ≡ (lr/sync-remote handler) | runs_handler_locally | immediate_response
+  | benefit: full_stack_test | deterministic | no_network | no_timing | complete_inspection
+  | constraint: hooks_simulated_layer | state_may_differ_from_browser | full_fidelity_good
+
+λ custom_remote_pattern(ast, callback, error_callback).
+  (defn my-remote [env]
+    (fn [this ast callback]
+      (let [result (fetch-data (:url ast))]
+        (callback {:status 200 :body (parse-response result)}))))
+  | receives: {::target ... ::dispatch-key ... in AST}
+  | must_call: callback | with {:status ... :body (edn-or-parsed-json)}
+  | must_call: error-handler | with exception | if_network_fails
+  | implementation_details: ¬specify | HTTP | WebSocket | local_bridge | etc
+  | testing: use loopback_remote | simulates_this_contract | deterministic
+  | anti_pattern: not_calling_callback | transaction_hangs | memory_leak
+  | constraint: callback_must_receive_map_with_status_and_body | exact_shape_required
+
+λ index_usage_pattern(app_instance).
+  (comp/get-component app [:entity/id 1]) ≡ find_instance_by_ident | inspect_props
+  (comp/find-component app ComponentClass) ≡ find_first_instance_by_class | inject_state
+  | indexes_maintained_automatically | no_manual_update
+  | use_case: testing | inspect_rendered_state | make_assertions
+  | use_case: targeted_state_update | via_mutation | update_specific_component
+  | use_case: debugging | Fulcro_Inspect | view_component_tree
+  | limitation: lags_one_transaction | fresh_after_render | not_during_transaction
+  | anti_pattern: using_index_to_drive_logic | indexes_are_inspection_tools | not_authority
 ```
 
 ## Memory Anchors
 
 ```
 λ remember.
-  fulcro ≡ graph_database_as_ui_framework | query→denormalize→render→transact→normalize→query
+  fulcro ≡ immutable_normalized_db_plus_query_component_tree
   
   the_invariants:
-  | has_ident ∧ has_query → composition ∧ normalization_possible
-  | normalized_state ∧ denormalize(query) ← shape_contract
-  | mark_missing ∧ sweep → orphaned_data_removed ← consistency_maintained
-  | ¬nested_trees_in_state ← must_normalize_on_entry
-  | query_covariance ← query_structure ⊗ state_shape_match
+  | ∀component_in_join → has_query ∧ has_ident (or_denormalize_fails)
+  | ∀ident_in_state → reachable_from_root_via_join (or_orphaned)
+  | ∀mutation → has_action ∨ remote (or_incomplete)
+  | ∀load! → has_target ∨ orphaned (or_unreachable)
+  | ∀tempid → rewritten_before_denormalize_next_render (or_dangling)
+  | ∀join_key_in_parent_query → must_exist_in_denormalized_props (or_nil_join)
+  | state ≡ immutable | all_changes_via_swap! (or_undetected)
+  | indexes ≡ automatic | reindex_on_denormalize (or_stale_lookups)
   
   the_fears:
-  | stale_props ← skip(denormalize_time_check) ∨ parent_passes_old_props
-  | orphaned_entities ← skip(mark_missing) ∨ skip(sweep)
-  | nested_trees_persist ← skip(normalize) ← silent_bugs ← hard_to_debug
-  | query_mismatches ← undefined_in_render ← crash ← must_match_exactly
-  | tempids_unresolved ← server_doesn't_return_id_map ← wrong_entity_ids_forever
+  | stale_denormalized_props ← missing_query_join | missing_ident | state_divergence
+  | orphaned_entities ← missing_target | missing_initial_location | unreachable_path
+  | render_errors ← nil_joins | type_mismatches | query_shape_mismatch
+  | infinite_loops ← transact!_in_render | circular_triggers | missing_termination
+  | tempid_corruption ← incomplete_rewrite | remaining_tempids | timing_bugs
+  | form_state_confusion ← nested_in_entity | missing_pristine_sync | dirty_calculation_bugs
+  | concurrent_mutations → state_race | ordering_lost | merge_conflicts | rollback_impossible
+  | network_failures → no_error_handling | diverged_state | orphaned_loads | no_recovery
   
   the_checks:
-  | ∀defsc → has_ident? ∧ has_query? ← required_for_composition
-  | ∀load! → query_of_component_matches_response_shape ← denormalize_works
-  | ∀mutation_join → query_ast_in_result_action ← merge_works
-  | ∀load_response → mark_missing ∧ sweep ← orphan_sweep_required
-  | ∀render → basis_t_advanced ← all_denormalize_calls_atomic
+  | defsc_has_all_three: query ∧ ident ∧ render (required_for_composability)
+  | query_shape_matches_denormalized_shape (or_nil_props_on_mismatch)
+  | ident_stable_per_entity (or_broken_caches_and_orphans)
+  | load!_has_target_or_initial_path (or_orphaned_in_db)
+  | mutation_has_action_if_local_effect (or_ui_unchanged)
+  | tempids_rewritten_before_render (or_dangling_references)
+  | form_fields_all_tracked (or_not_validated)
+  | target_creates_valid_path (or_unreachable_data)
+  | join_keys_exist_in_parent_props (or_nil_joins)
+  | query_includes_marker_for_loads (or_status_invisible)
   
-  the_tensions_accepted:
-  | immutable_state ⊗ mutable_react_rendering ← data_tunneling_workaround
-  | composition_on_wire ⊗ composition_in_state ← single_view_both_sides
-  | query_static ⊗ state_dynamic ← schema_and_data_evolve_together
-  | optimistic_updates ⊗ pessimistic_rollback ← both_possible ← careful_semantics
-  | load! ⊗ transact! ← different_flows ← queue_serializes_both
+  the_dynamics:
+  | query_composition ≡ automatic_via_joins | parent ⊃ children | no_wiring
+  | denormalize_on_demand ≡ per_render | query_executed_fresh | props_shaped_by_query
+  | merge_with_mark_missing ≡ sweep_algorithm | removes_stale_keys | prevents_phantom_data
+  | transaction_ordering ≡ local_first | remote_parallel_or_sequential | indexing_updates
+  | form_state_parallel ≡ pristine_copy | complete_tracking | dirty_detection_bidirectional
+  | tempid_remapping ≡ exhaustive_rewrite | swaps_all_references | cleanup_automatic
+  | load_marker_async ≡ status_queryable | ui_refreshes_on_change | feedback_mechanism
+  | asm_event_dispatch ≡ queue_model | sequential_per_instance | actions_side_effects
+  | headless_parity ≡ jvm_execution | synchronous_all | testable_deterministic | same_code
+
+λ surprising_findings.
+  trap: pre_merge_called_once_not_per_entity
+    | developer_expects: called_for_each_entity_in_response | per_join_transformation
+    | actually: called_once_for_entire_response_tree_chunk | recursion_required | easy_to_forget
+    | impact: shape_misalignment | normalization_failures | difficult_debugging
+
+  trap: mark_missing_necessary_but_easy_to_forget
+    | developer_expects: normalization_removes_absent_keys | automatic
+    | actually: requires_explicit_call | part_of_merge_pipeline | absent_keys_remain_if_skipped
+    | impact: stale_cache_hits | phantom_data | false_positives_on_queries
+
+  trap: indexes_lag_one_transaction
+    | developer_expects: get-component_returns_fresh_instance | immediate
+    | actually: indexes_updated_after_render | available_for_next_transaction | not_during
+    | impact: inspection_misleading | testing_timing_bugs | debugger_confusion
+
+  trap: query_shape_mismatch_leaves_gaps
+    | developer_expects: denormalize_pads_missing_keys | nil_or_default
+    | actually: missing_keys_absent_from_props | component_receives_incomplete | selective_application
+    | impact: nil_reference_errors | missing_field_surprises | subtle_render_failures
+
+  trap: load!_in_render_queued_not_executed
+    | developer_expects: load!_executes_immediately | data_fetched_on_render
+    | actually: queued_with_transaction | executed_after_render_complete | user_sees_loading_state
+    | impact: loading_indicators_visible | data_appears_next_render | timing_surprise
+
+  trap: tempid_rewrite_must_be_exhaustive
+    | developer_expects: remaining_tempids_cleaned_automatically | gc_handles_it
+    | actually: all_references_must_be_swapped | forgotten_references_dangling | orphaned
+    | impact: ui_component_not_rendering | stale_idents | confusing_test_failures
+
+  trap: ident_changes_after_creation
+    | developer_expects: ident_changes_allowed | flexible_addressing
+    | actually: breaks_all_caches | denormalizations_fail | references_orphaned | undetected
+    | impact: data_corruption | mysterious_render_failures | time_travel_debugger_shows_inconsistency
 ```
