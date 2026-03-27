@@ -27,27 +27,50 @@ Human ⊗ AI ⊗ REPL
                     :elicit    {:target :eliciting}
                     :decompile {:target :decompiling}
                     :check     {:target :checking}}}
-  :distilling {:entry {:action "prose → Allium spec. Extract behavioral entities, rules, enums, and config from the description. For each behavior: identify the trigger (when:), preconditions (requires:), and outcomes (ensures:). Name entities as nouns, rules as VerbNoun. Include guidance blocks for implementation hints. Output valid Allium syntax only. No prose wrapping."}}
-  :eliciting  {:entry {:action "conversational → Allium spec. Ask clarifying questions about ambiguous behaviors, missing preconditions, unstated edge cases, and conflicting rules. After each answer, update the spec. Surface contradictions the user hasn't noticed. Continue until the user says done. Output valid Allium syntax after each round."}}
-  :decompiling {:entry {:action "Allium → prose. Translate every entity, rule, enum, config, and guidance block into natural language. Preserve ALL semantics — every when/requires/ensures must appear. Target audience from request. Output clear prose only. No Allium syntax."}}
-  :checking   {:entry {:action "Allium spec → issues list. Check for: missing preconditions, unreachable rules, entity fields referenced but never defined, contradictory requires clauses, rules with ensures but no when, entities with no rules, implicit behaviors not captured, missing or stale traces, unused use imports, invariant violations, contract/surface mismatches (demands without matching fulfils), cyclic config references, @invariant or @guarantee without corresponding prose, and version header (-- allium: 2). Output a numbered list of issues with suggested fixes."}}}
+  :distilling {:entry {:action "prose → Allium v3 spec. Begin with '-- allium: 3'. Extract behavioral entities, rules, enums, and config from the description. For each behavior: identify the trigger (when:), preconditions (requires:), and outcomes (ensures:). Name entities as nouns, rules as VerbNoun. Include guidance blocks for implementation hints. For entities with lifecycle status fields: add transitions blocks declaring valid edges and terminal states. For fields that are absent before a lifecycle stage and present after it: use 'when status = value' instead of '?'. Use typed config parameters (name: Type = value). Use free-standing function syntax for domain-specific collection operations (not dot-methods). Use backtick-quoted enum literals for external standard values. Use Set<T> for unordered collections, List<T> when order matters. Output valid Allium v3 syntax only. No prose wrapping."}}
+  :eliciting  {:entry {:action "conversational → Allium v3 spec. Begin with '-- allium: 3'. Ask clarifying questions about ambiguous behaviors, missing preconditions, unstated edge cases, and conflicting rules. Also ask about lifecycle transitions (which states can reach which?), field presence dependencies (which fields only exist in certain states?), and collection ordering requirements. After each answer, update the spec using v3 constructs: transition graphs for lifecycle fields, when clauses for state-dependent fields, typed config, free-standing function syntax for collection operations. Surface contradictions the user hasn't noticed. Continue until the user says done. Output valid Allium v3 syntax after each round."}}
+  :decompiling {:entry {:action "Allium → prose. Translate every entity, rule, enum, config, transition graph, when clause, and guidance block into natural language. Preserve ALL semantics — every when/requires/ensures must appear. Describe transition graphs as lifecycle flows. Describe when-qualified fields as state-dependent presence. Target audience from request. Output clear prose only. No Allium syntax."}}
+  :checking   {:entry {:action "Allium spec → issues list. Check for: missing preconditions, unreachable rules, entity fields referenced but never defined, contradictory requires clauses, rules with ensures but no when, entities with no rules, implicit behaviors not captured, missing or stale traces, unused use imports, invariant violations, contract/surface mismatches (demands without matching fulfils), cyclic config references, @invariant or @guarantee without corresponding prose, version header (-- allium: 3), transition graph violations (ensures producing transitions not in graph, non-terminal states without outbound edges, declared edges not witnessed by any rule, enum values missing from graph), when-clause obligation violations (entering when set without setting field, leaving when set without clearing field, accessing when-qualified field without requires guard), .first/.last on Set collections (warning, will become error), custom dot-methods on collections (must use free-standing black box function syntax), ordered/unordered type mismatches (set arithmetic on ordered collections used where ordering expected). Output a numbered list of issues with suggested fixes."}}}
  :data {:allium-syntax-reference
-  "-- allium: 2
+  "-- allium: 3
    module <name>
    use \"<coordinate>\" as <alias>
+   given { <binding>: <EntityType> }
    entity <Name> {
-     field: Type, ...
+     field: Type
+     field: Type?
+     field: Type when status = value1 | value2
+     field: Type? when status = value1
+     status: value1 | value2 | value3
+     transitions status {
+       value1 -> value2
+       value2 -> value3
+       terminal: value3
+     }
+     relationship: Entity with field = this
+     projection: relationship where condition
+     derived_value: expression
+     derived_value: expression when status = value
      invariant <Name> { <expression> }
    }
-   enum <Name> { value1 | value2 | ... }
+   external entity <Name> { field: Type }
+   value <Name> { field: Type }
+   variant <Name> : <BaseEntity> { field: Type }
+   enum <Name> { value1 | value2 | `hyphenated-value` }
    rule <VerbNoun> {
      when: <Trigger>(params)
      when: binding: Entity.field becomes <value>
+     when: binding: Entity.field transitions_to <value>
+     when: binding: Entity.created
+     when: binding: Entity.timestamp_field <= now
+     for item in Collection [where condition]:
+     let binding = expression
      requires: <precondition>
      requires: a implies b
      ensures: <outcome>
      if <condition>: <conditional-outcome>
      traces: <impl-reference>
+     @guidance -- non-normative advice
    }
    invariant <Name> { for x in Collection: <expression> }
    contract <Name> {
@@ -55,20 +78,35 @@ Human ⊗ AI ⊗ REPL
      @invariant <Name> -- prose assertion
    }
    surface <Name> {
-     facing <role>: <CounterpartType>
+     facing <role>: <ActorType>
+     context <binding>: <EntityType> [where predicate]
+     let binding = expression
+     exposes: field [when condition]
+     provides: Action(params) [when condition]
      contracts: demands <Contract> | fulfils <Contract>
      @guarantee <Name> -- prose assertion
+     @guidance -- non-normative advice
+     related: OtherSurface(navigation) [when condition]
+     timeout: RuleName [when temporal_condition]
    }
    config {
-     default <name> = <value>
+     <name>: Type = <value>
      <name>: Type = <alias>/config.<param>
      <name>: Type = <alias>/config.<param> * <expr>
    }
-   guidance { -- implementation hint }
+   default <EntityType> <name> = { field: value }
    @guidance -- non-normative implementation advice
-   deferred <Entity.field>
-   actor <Name> { ... }
-   given <scenario> { ... }"}}
+   deferred <Entity.method>
+   actor <Name> { identified_by: Entity where condition }
+   open question \"<question>\"
+   -- Collection types: Set<T> (unordered), List<T> (ordered field), Sequence<T> (ordered from relationships)
+   -- Built-in dot-methods: .count .any() .all() .first .last .unique .add() .remove()
+   -- Domain-specific collection ops: free-standing syntax e.g. filter(coll, pred)
+   -- Black box functions: free-standing call syntax e.g. hash(password), verify(pw, hash)
+   -- Backtick enum literals: `de-CH-1996` for external standards with non-snake_case chars
+   -- .first/.last restricted to ordered collections (Sequence or List<T>)
+   -- .unique always produces unordered Set
+   -- Set arithmetic (+, -) on ordered collections produces unordered results"}}
 ```
 
 ## Four Commands
@@ -116,21 +154,28 @@ behaviors not yet captured. Returns a numbered issue list with suggested fixes.
 Example output (Qwen3-VL 235B):
 
 ```allium
--- allium: 2
+-- allium: 3
 module authentication
 
 enum AccountStatus { unverified | active | locked }
 
 entity User {
-  email: Email
+  email: String
   password_hash: String
   status: AccountStatus
   failed_login_attempts: Integer
-  locked_until: Timestamp?
   email_verified: Boolean
+  locked_until: Timestamp when status = locked
+
+  transitions status {
+    unverified -> active
+    active -> locked
+    locked -> active
+    terminal: unverified
+  }
 
   invariant LockConsistency {
-    failed_login_attempts >= max_login_attempts implies status = locked
+    failed_login_attempts >= config.max_login_attempts implies status = locked
   }
 }
 
@@ -140,20 +185,20 @@ entity ResetToken {
 }
 
 invariant UniqueEmail {
-  for a in User:
-    for b in User:
+  for a in Users:
+    for b in Users:
       a != b implies a.email != b.email
 }
 
 config {
-  default max_login_attempts = 5
-  default lockout_duration = 30 minutes
-  default reset_token_expiry = 24 hours
+  max_login_attempts: Integer = 5
+  lockout_duration: Duration = 30.minutes
+  reset_token_expiry: Duration = 24.hours
 }
 
 rule UserSignsUp {
   when: SignUpRequested(email, password)
-  requires: email is unique among User.email
+  requires: not exists User{email: email}
   ensures:
     User.created(
       email: email,
@@ -162,7 +207,7 @@ rule UserSignsUp {
       failed_login_attempts: 0,
       email_verified: false
     )
-    VerificationEmail.sent(to: email)
+    VerificationEmailRequested(email: email)
   @guidance
     -- Use bcrypt or argon2 for password hashing.
     -- Verification email must contain a signed token with expiry.
@@ -171,70 +216,79 @@ rule UserSignsUp {
 rule UserVerifiesEmail {
   when: EmailVerified(user)
   requires: user.status = unverified
-  ensures: user.status = active
-           user.email_verified = true
+  ensures:
+    user.status = active
+    user.email_verified = true
 }
 
 rule UserLogsIn {
   when: LoginAttempted(email, password)
+  let user = User{email: email}
+  requires: exists user
   requires: user.status = active
   requires: user.email_verified = true
   requires: verify(password, user.password_hash)
-  ensures: user.failed_login_attempts = 0
-           SessionCreated(user: user)
+  ensures:
+    user.failed_login_attempts = 0
+    SessionCreated(user: user)
   @guidance
     -- Use constant-time comparison for password hashes.
 }
 
 rule LoginFails {
   when: LoginAttempted(email, password)
+  let user = User{email: email}
+  requires: exists user
   requires: user.status = active
   requires: not verify(password, user.password_hash)
   ensures:
     user.failed_login_attempts = user.failed_login_attempts + 1
-    if user.failed_login_attempts >= max_login_attempts:
+    if user.failed_login_attempts >= config.max_login_attempts:
       user.status = locked
-      user.locked_until = now + lockout_duration
+      user.locked_until = now + config.lockout_duration
 }
 
 rule LockedAccountExpires {
-  when: user.locked_until <= now
+  when: user: User.locked_until <= now
   requires: user.status = locked
-  ensures: user.status = active
-           user.failed_login_attempts = 0
-           user.locked_until = null
+  ensures:
+    user.status = active
+    user.failed_login_attempts = 0
+    user.locked_until = null
 }
 
 rule AdminUnlocksAccount {
   when: AdminUnlock(user, admin)
   requires: user.status = locked
   requires: admin.role = admin implies admin.mfa_enabled
-  ensures: user.status = active
-           user.failed_login_attempts = 0
-           user.locked_until = null
+  ensures:
+    user.status = active
+    user.failed_login_attempts = 0
+    user.locked_until = null
   @guidance
     -- Log admin action with timestamp and reason.
 }
 
 rule UserRequestsPasswordReset {
   when: PasswordResetRequested(user)
-  requires: user.status in [active, locked]
+  requires: user.status in {active, locked}
   requires: user.email_verified
   ensures:
     ResetToken.created(
       user: user,
-      expires_at: now + reset_token_expiry
+      expires_at: now + config.reset_token_expiry
     )
-    ResetEmail.sent(to: user.email)
+    ResetEmailRequested(to: user.email)
 }
 
 rule UserResetsPassword {
   when: PasswordReset(token, new_password)
   requires: token.expires_at > now
-  ensures: token.user.password_hash = hash(new_password)
-           token.user.status = active
-           token.user.failed_login_attempts = 0
-           token.deleted
+  ensures:
+    token.user.password_hash = hash(new_password)
+    token.user.status = active
+    token.user.failed_login_attempts = 0
+    not exists token
 }
 
 contract AuthenticationAPI {
@@ -263,11 +317,15 @@ surface UserFacing {
 }
 ```
 
-Five casual sentences → 2 enums, 2 entities, 8 rules, 2 invariants,
-1 contract, 1 surface, config defaults, `implies` guards, `@guidance`
-hints, and `@guarantee` assertions. The v2 features make constraints
-machine-checkable — the `LockConsistency` invariant and `UniqueEmail`
-invariant were implicit in the v1 version; now they're formal.
+Five casual sentences → 1 enum, 2 entities, 8 rules, 2 invariants,
+1 contract, 1 surface, typed config defaults, `implies` guards, `@guidance`
+hints, `@guarantee` assertions, a transition graph on `User.status`, and
+a `when`-qualified `locked_until` field that is present only when the
+account is locked. The transition graph makes the `unverified → active →
+locked → active` lifecycle explicit and authoritative — the checker
+validates that every rule-produced transition appears in the graph. The
+`when` clause on `locked_until` replaces the old `Timestamp?` — it's not
+optional, it's lifecycle-dependent: absent when active, required when locked.
 
 ### Elicit
 
@@ -524,124 +582,167 @@ All from one prose description, all just data.
   Claude and GPT handle the syntax well. Smaller local models may need
   the syntax reference reinforced.
 
-## Allium v2
+## Allium v3
 
-Our compiler targets Allium v2. Every v1 spec is valid v2 — change
-`-- allium: 1` to `-- allium: 2` and everything works. v2 adds six
-new capabilities.
+Our compiler targets Allium v3. All v1 and v2 specs are forward-compatible —
+update the version header and, if you used custom dot-methods on collections,
+rewrite them to free-standing function syntax. v3 adds six new capabilities
+and one enforcement change on top of v2's foundation.
 
-### Expression-Bearing Invariants
+### What v2 Established (still valid)
 
-Invariants are machine-readable assertions over entity state. Top-level
-invariants express system-wide properties; entity-level invariants scope
-to a single entity:
+These v2 features are baseline in v3 — unchanged and fully supported:
+
+- **Expression-bearing invariants** — `invariant Name { expr }` at top-level
+  and entity-level, machine-readable assertions over entity state
+- **The `implies` operator** — `a implies b` everywhere expressions are used
+- **Module-level contracts** — `contract Name { ... }` with typed signatures
+  and `@invariant` prose assertions, referenced by surfaces via `demands`/`fulfils`
+- **The `@` annotation sigil** — `@invariant`, `@guarantee`, `@guidance` for
+  prose whose structure the checker validates
+- **Config parameter references** — `alias/config.param` with expression-form
+  defaults and acyclic reference graphs
+- **Version header** — `-- allium: 3` on the first line
+
+### Transition Graphs
+
+Entities can now declare the valid lifecycle transitions for enum status
+fields explicitly. When present, the graph is authoritative — rules
+producing transitions not in the graph are validation errors:
 
 ```allium
-invariant UniqueEmail {
-    for a in Users:
-        for b in Users:
-            a != b implies a.email != b.email
-}
+entity Order {
+    status: pending | confirmed | shipped | delivered | cancelled
 
-entity Account {
-    balance: Decimal
-    credit_limit: Decimal
-
-    invariant SufficientFunds {
-        balance >= -credit_limit
+    transitions status {
+        pending -> confirmed
+        confirmed -> shipped
+        shipped -> delivered
+        pending -> cancelled
+        confirmed -> cancelled
+        terminal: delivered, cancelled
     }
 }
 ```
 
-Previously these lived in comments. Now LLMs can check them when
-generating code, and the `check` command can flag violations.
+The checker enforces that every non-terminal state has at least one outbound
+edge and that every declared edge is witnessed by at least one rule. Every
+enum value must appear in at least one edge or as a terminal — drift is a
+hard error. Entities without a declared graph continue to derive transition
+validity from rules alone.
 
-### The `implies` Operator
+### State-Dependent Field Presence (`when` clause)
 
-`a implies b` replaces the less readable `not a or b` and is available
-everywhere expressions are used:
-
-```allium
-requires: user.role = admin implies user.mfa_enabled
-```
-
-### Module-Level Contracts
-
-Contracts are reusable typed interfaces for code-to-code boundaries.
-They declare typed signatures and prose invariants. Surfaces reference
-them with directionality: `demands` means the counterpart must implement
-it, `fulfils` means this surface supplies it:
+v2 used `?` to mark fields that might be absent. In lifecycle entities,
+many fields are absent in some states and guaranteed present in others,
+but `?` cannot express this. v3 adds a `when` clause on field declarations:
 
 ```allium
-contract Codec {
-    serialize: (value: Any) -> ByteArray
-    deserialize: (bytes: ByteArray) -> Any
+entity Document {
+    status: active | deleted
+    deleted_at: Timestamp when status = deleted
+    deleted_by: User when status = deleted
 
-    @invariant Roundtrip
-        -- deserialize(serialize(value)) produces a value
-        -- equivalent to the original for all supported types.
-}
-
-surface DomainIntegration {
-    facing framework: FrameworkRuntime
-
-    contracts:
-        demands Codec
-        fulfils EventSubmitter
-
-    @guarantee AllOperationsIdempotent
-        -- All operations exposed by this surface
-        -- are safe to retry.
+    transitions status {
+        active -> deleted
+        deleted -> active
+        terminal: deleted
+    }
 }
 ```
 
-Specs can now describe integration boundaries precisely enough that an
-LLM implementing one side knows what the other side expects.
+The checker enforces **presence and absence obligations** at transition
+boundaries:
 
-### The `@` Annotation Sigil
+- **Entering** the `when` set → rule must set the field
+- **Leaving** the `when` set → rule must clear the field (set to `null`)
+- **Accessing** a `when`-qualified field without a `requires` guard
+  narrowing to a qualifying state → error
 
-Three keywords mark prose whose structure the checker validates but
-whose content it does not evaluate:
+`?` and `when` are orthogonal: `reviewer_notes: String? when review =
+approved | rejected` means the field exists in those states but may be
+null within them. `?` is genuine optionality; `when` is lifecycle-dependent
+presence.
 
-- **`@invariant`** — named prose assertion scoped to a contract
-- **`@guarantee`** — named prose assertion scoped to a surface
-- **`@guidance`** — non-normative implementation advice (latency hints,
-  batching strategies) that belongs in the spec
+### Derived Value `when` Propagation
 
-Clean promotion path: start with prose `@invariant`, then drop the `@`
-and add a `{ expr }` body when you can express it formally.
-
-### Config Parameter References
-
-Importing modules can reference or derive config defaults from
-dependencies — config composition without magic numbers crossing
-module boundaries:
+Derived values computed from `when`-qualified fields automatically inherit
+the intersection of their inputs' `when` sets:
 
 ```allium
-use "./core.allium" as core
+entity Order {
+    status: pending | confirmed | shipped | delivered
+    shipped_at: Timestamp when status = shipped | delivered
+    delivery_confirmed_at: Timestamp when status = delivered
 
-config {
-    base_timeout: Duration = core/config.base_timeout
-    extended_timeout: Duration = core/config.base_timeout * 2
-    buffer_size: Integer = core/config.batch_size + 10
+    transitions status {
+        pending -> confirmed
+        confirmed -> shipped
+        shipped -> delivered
+        terminal: delivered
+    }
+
+    -- Inferred: when status = delivered
+    -- (intersection of {shipped, delivered} and {delivered})
+    days_in_transit: delivery_confirmed_at - shipped_at
 }
 ```
 
-Expressions resolve once at config resolution time. The reference graph
-must be acyclic.
+The checker infers this; the author does not declare it. An optional
+explicit `when` annotation is documentation — the checker verifies it
+matches the inferred set.
 
-### Version Header
+### Backtick-Quoted Enum Literals
 
-Specs declare their version with a header comment:
+Enum values referencing external standards can now use their canonical
+form, even if it falls outside snake_case:
 
 ```allium
--- allium: 2
-module authentication
+enum InterfaceLanguage { en | de | fr | `de-CH-1996` | es | `zh-Hant-TW` }
+enum CacheDirective { `no-cache` | `no-store` | `must-revalidate` }
 ```
 
-The `check` command validates against the declared version.
+Backtick-quoted literals are values, not identifiers. Comparison is
+byte-exact after UTF-8 encoding. They are permitted in enum declarations
+and literal comparisons. They are not permitted in identifier positions
+(field names, entity names, rule names).
 
-## Language Features (v1)
+### Ordered Collection Semantics
+
+v3 distinguishes ordered from unordered collections:
+
+- **`Set<T>`** — unordered collection of unique items (unchanged)
+- **`List<T>`** — ordered collection, declared explicitly as a field type
+- **`Sequence<T>`** — ordered collection produced by ordered relationships;
+  subtype of `Set` (assignable where unordered is expected, not the reverse)
+
+`.first` and `.last` are restricted to ordered collections (`Sequence` or
+`List<T>`). Using them on a `Set` is a warning in v3, becoming a hard error
+in the next version. `.unique` always produces an unordered `Set`. Set
+arithmetic (`+`, `-`) on ordered collections produces unordered results.
+
+### Black Box Function Syntax (Enforcement Change)
+
+v3 reserves dot-method syntax on collections for built-in operations only:
+`.count`, `.any()`, `.all()`, `.first`, `.last`, `.unique`, `.add()`,
+`.remove()`. Any other dot-method call on a collection is a checker error.
+
+Domain-specific collection operations must use free-standing syntax:
+
+```allium
+-- v2 (permitted but discouraged):
+events.filter(e => e.recent)
+
+-- v3 (required):
+filter(events, e => e.recent)
+grouped_by(copies, r => r.output_payloads)
+min_by(pending, e => e.offset)
+```
+
+This is the only breaking change in v3. If your v2 spec did not use
+custom dot-methods on collections, no rewriting is needed.
+
+## Language Features
 
 ### Modular Composition with `use`
 
