@@ -143,7 +143,9 @@ term             = function_call
 
 function_call    = identifier , "(" , [ arg_list ] , ")" ;
 
-arg_list         = expression , { "," , expression } ;
+arg_list         = arg , { "," , arg } ;
+
+arg              = expression | path ;
 
 negation         = "¬" , term ;
 
@@ -197,6 +199,10 @@ expr_op          = "→"                                 (* implies *)
 (* ─── Primitives ──────────────────────────────────────────────────── *)
 
 keyword          = ":" , identifier ;
+
+path             = path_segment , { "/" , path_segment } , [ "/" ] ;
+
+path_segment     = letter , { letter | digit | "_" | "-" | "." } ;
 
 identifier       = letter , { letter | digit | "_" | "-" } ;
 

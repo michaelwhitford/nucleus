@@ -505,6 +505,7 @@ Nucleus is an experimental framework. Contributions welcome:
 
 - [Matryoshka](https://github.com/yogthos/Matryoshka) - Process documents 100x larger than your LLM's context window
 - [Ouroboros](https://github.com/michaelwhitford/ouroboros) - An AI vibe-coding game. Can you guide the AI and together build the perfect AI tool?
+- [psi](https://github.com/hugoduncan/psi) - Extensible AI Agent in Clojure
 
 ## License
 
