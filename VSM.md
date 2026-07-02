@@ -9,7 +9,7 @@ Most AI instruction files are flat — every rule at the same level. The AI trea
 A VSM separates concerns by *why they exist*. Five layers, from the most enduring to the most replaceable:
 
 ```
-S5 (identity)      — what your system IS
+S5 (policy)        — what your system IS, and the ground rules that protect it
 S4 (intelligence)  — how your system adapts
 S3 (control)       — how your system manages resources
 S2 (coordination)  — how the parts work together
@@ -20,11 +20,15 @@ Higher layers change less and matter more. When an S5 principle changes, everyth
 
 ## The Five Layers
 
-### S5 — Identity
+### S5 — Identity & Policy
 
-*What your system IS. The principles that survive everything else being replaced.*
+*What your system IS, and the ground rules that protect it. The principles that survive everything else being replaced.*
+
+In Beer's model this layer is **Policy** — and policy and identity are two faces of the same closure. Identity is *what the system is*; policy is *the ground rules that preserve that identity*. They live at the same level, with the same authority. S5 also closes the loop: it arbitrates the tension between S4 (the future, the outside) and S3 (the now, the inside).
 
 These are non-negotiables — things that if violated mean the system has failed, regardless of whether the code runs. They change rarely. When they do, everything below changes too.
+
+Note the split with S3: S5 *declares* policy (the ground rule and its why); S3 *enforces* it (the mechanism). "Never lock the user in" is S5. "Export runs nightly, verified by checksum" is S3 implementing it.
 
 Examples:
 - "Errors are signals — never suppress them, never swallow silently"
@@ -48,9 +52,9 @@ Examples:
 
 ### S3 — Control
 
-*How your system manages resources and enforces policies.*
+*How your system enforces S5's policy and manages resources.*
 
-Concrete rules that govern how the system runs. They implement S5's values as enforceable constraints. Resource limits, quality standards, error handling policies.
+Concrete mechanisms that govern how the system runs. S3 does not *source* policy — it *enforces* the policy declared at S5, turning values into checkable constraints under real resource limits. If you're writing a ground rule and its rationale, that's S5; if you're writing the mechanism that makes the rule hold, that's S3. Resource limits, quality gates, error-handling mechanisms.
 
 Examples:
 - "All HTTP calls have a 30-second timeout"
