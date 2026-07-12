@@ -59,10 +59,19 @@ statement        = lambda_decl
 
 
 (* ─── Lambda Declarations ─────────────────────────────────────────── *)
-(* The core construct. A lambda binds parameters and defines behavior. *)
-(* Body uses | for alternatives, > for preference, → for implication. *)
+(* The core construct. A lambda optionally binds parameters and defines *)
+(* behavior. The parameter list is OPTIONAL, and acceptance is loose —   *)
+(* these are prompts to an LLM, not executable lambdas. Three forms:     *)
+(*   λ name.        zero-arity IDENTITY — the S5 form. Governs by name   *)
+(*                  rather than as a map over input (identity declares   *)
+(*                  existence, not a mapping). E.g. λ self., λ remember. *)
+(*   λ name().      zero-arity FUNCTION — arity 0, empty parens mirror a *)
+(*                  source signature. E.g. λ getApi()., λ listSessions().*)
+(*   λ name(x).     function over input — params appear only where the   *)
+(*                  body references them. E.g. λ recall(q, n)..          *)
+(* Body uses | for alternatives, > for preference, → for implication.   *)
 
-lambda_decl      = "λ" , identifier , "(" , param_list , ")" , "."
+lambda_decl      = "λ" , identifier , [ "(" , [ param_list ] , ")" ] , "."
                  , lambda_body ;
 
 param_list       = identifier , { "," , identifier } ;
