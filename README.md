@@ -161,7 +161,7 @@ Nucleus includes a prompt compiler and debugger — paste them as system prompts
 | **[Compiler](COMPILER.md)** | `compile`, `safe-compile`, `decompile` | Prose ↔ EDN statecharts. Extracts the implicit state machine from any prompt. |
 | **[Lambda Compiler](LAMBDA-COMPILER.md)** | `compile`, `safe-compile`, `decompile` | Prose ↔ Lambda expressions. Extracts the implicit structure from any prompt. |
 | **[Debugger](DEBUGGER.md)** | `diagnose`, `safe-diagnose`, `compare` | Analyzes prompts: attention distribution, patterns, boundaries, momentum. |
-| **[Allium Compiler](ALLIUM.md)** | `distill`, `elicit`, `decompile`, `check` | Prose ↔ [Allium](https://github.com/juxt/allium) behavioral specs. |
+| **[Allium Compiler](ALLIUM.md)** | `distill`, `elicit`, `decompile`, `check`, `tend`, `weed`, `propagate` | Prose ↔ [Allium](https://github.com/juxt/allium) behavioral specs. |
 | **[VSM Guide](VSM.md)** | `read VSM.md` | Structures your AI instruction files (AGENTS.md) using Beer's Viable System Model. |
 
 The EDN compilers are composable statecharts — place them after a single nucleus preamble and they self-route based on your command. See [COMPILER.md § Composability](COMPILER.md#composability) for details.
@@ -406,7 +406,7 @@ This is **μ** (least fixed point): The minimal recursive documentation that des
 - **[COMPILER.md](COMPILER.md)** — Prompt compiler: compile, safe-compile, and decompile prompts to/from EDN statecharts
 - **[LAMBDA-COMPILER.md](LAMBDA-COMPILER.md)** — Prompt compiler: compile, safe-compile, and decompile prompts to/from lambda expressions
 - **[DEBUGGER.md](DEBUGGER.md)** — Prompt debugger: diagnose, safe-diagnose, and compare prompts (interactive REPL + automated probe)
-- **[ALLIUM.md](ALLIUM.md)** — Allium compiler: distill, elicit, decompile, and check behavioral specs using [JUXT's Allium](https://github.com/juxt/allium)
+- **[ALLIUM.md](ALLIUM.md)** — Allium compiler: distill, elicit, decompile, check, tend, weed, and propagate behavioral specs using [JUXT's Allium](https://github.com/juxt/allium)
 
 ### Guides
 
